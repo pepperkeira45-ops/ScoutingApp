@@ -1,0 +1,44 @@
+name: Auto-Update Pit Scouting CSV
+
+on:
+  schedule:
+    # Runs automatically at the top of every hour (e.g., 1:00, 2:00, 3:00)
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # This allows you to click a "Run workflow" button manually in GitHub
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Allows the action to commit the new CSV to the repo
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compile and Run Java Downloader
+        run: |
+          javac src/DownloadCSV.java
+          java -cp src DownloadCSV
+
+      - name: Commit and Push Changes
+        run: |
+          # Configure Git to act as a bot
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add the newly downloaded CSV
+          git add data.csv
+          
+          # Commit only if there are changes. If the CSV is identical, it will safely skip.
+          git commit -m "Automated data.csv update from Google Sheets" || echo "No changes to commit"
+          
+          # Push back to the main branch
+          git push
