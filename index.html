@@ -4,232 +4,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WOBOT 141 - Scouting Master</title>
-
+    <title>WOBOT 141 - Command Center</title>
     <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator_midnight.min.css" rel="stylesheet">
-
     <style>
-        /* --- WOBOT 141 COLOR SCHEME (Black, Grey, Red, White) --- */
         :root {
-            --primary-color: #e62020;
-            /* WOBOT Red */
-            --primary-hover: #ff4d4d;
-            --bg-color: #0d0d0d;
-            /* Deep Black */
-            --card-bg: #1a1a1a;
-            /* Dark Grey Card */
-            --text-main: #ffffff;
-            /* White */
-            --text-muted: #cccccc;
-            /* Light Grey */
-            --border-color: #333333;
-            /* Medium Grey Border */
-            --border-radius: 8px;
-            --shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            --wobot-red: #e62020;
+            --wobot-red-hover: #ff4d4d;
+            --bg-black: #0d0d0d;
+            --card-grey: #1a1a1a;
+            --border-grey: #333333;
+            --text-white: #ffffff;
+            --text-muted: #aaaaaa;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-        }
-
-        h1 {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
-            padding-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background-color: var(--bg-black);
+            color: var(--text-white);
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* --- APP CONTAINER --- */
         #app-container {
             padding: 20px 40px;
         }
 
-        /* --- AUTH SCREEN STYLES --- */
-        #auth-screen {
+        h1 {
+            color: var(--wobot-red);
+            border-bottom: 3px solid var(--wobot-red);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* UI Components */
+        .user-info-bar {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: var(--bg-color);
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .auth-card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--primary-color);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .auth-card input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid var(--border-color);
-            background: #262626;
-            color: white;
-            box-sizing: border-box;
-        }
-
-        .auth-card button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .auth-card button:hover {
-            background: var(--primary-hover);
-        }
-
-        #auth-error {
-            color: var(--primary-color);
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .logout-btn {
-            float: right;
-            background: #333333;
-            color: white;
-            border: 1px solid var(--border-color);
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            background: #444;
-        }
-
-        /* --- DASHBOARD STYLES --- */
-        #main-view {
-            transition: opacity 0.3s ease;
-        }
-
-        .table-container {
-            box-shadow: var(--shadow);
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            margin-top: 15px;
-            overflow-x: auto;
-            border: 1px solid var(--border-color);
-            width: 100%;
-        }
-
-        /* Tabulator Custom Styling to Match Red Theme */
-        .tabulator {
-            background-color: var(--card-bg) !important;
-            color: white !important;
-            border: none !important;
-        }
-
-        .tabulator-header {
-            background-color: #262626 !important;
-            color: var(--primary-color) !important;
-            font-weight: bold !important;
-            border-bottom: 2px solid var(--primary-color) !important;
-        }
-
-        #team-detail-view {
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        #back-btn {
+            margin-bottom: 15px;
+            background: var(--card-grey);
             padding: 10px 20px;
-            background: #333333;
-            color: white;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-grey);
+        }
+
+        .status-pill {
+            padding: 5px 12px;
+            border-radius: 20px;
             font-weight: bold;
-            transition: 0.2s;
+            font-size: 0.8em;
+        }
+
+        .online {
+            background: #1b4332;
+            color: #74c69d;
+            border: 1px solid #2d6a4f;
+        }
+
+        .offline {
+            background: #431b1b;
+            color: #c67474;
+            border: 1px solid #6a2d2d;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-grey);
+            padding-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            background: #222;
+            color: white;
+            border: 1px solid var(--border-grey);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
             white-space: nowrap;
         }
 
-        #back-btn:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
+        .nav-btn.active {
+            background: var(--wobot-red);
+            border-color: var(--wobot-red);
         }
 
-        #detail-team-title {
-            margin: 0;
-            font-size: 2em;
-            color: var(--text-main);
-            border: none;
+        .scout-form {
+            max-width: 600px;
+            margin: 0 auto;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 15px;
+            background: var(--card-grey);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--border-grey);
         }
 
-        .tba-avatar {
-            width: 40px;
-            height: 40px;
+        .scout-form label {
+            font-weight: bold;
+            color: var(--wobot-red);
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        .scout-form input,
+        .scout-form select,
+        .scout-form textarea {
+            padding: 12px;
             border-radius: 5px;
-            border: 1px solid var(--primary-color);
+            border: 1px solid var(--border-grey);
+            background: #222;
+            color: white;
+        }
+
+        .card {
+            background: var(--card-grey);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-grey);
+            margin-bottom: 20px;
         }
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 350px 1fr;
+            grid-template-columns: 380px 1fr;
             gap: 25px;
             align-items: start;
         }
 
-        .card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            box-sizing: border-box;
-        }
-
-        .card h3 {
-            margin-top: 0;
-            color: var(--primary-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-            text-transform: uppercase;
-        }
-
         .image-container {
             width: 100%;
-            height: 300px;
+            height: 320px;
             background-color: #000;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -237,7 +150,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--wobot-red);
         }
 
         .robot-photo {
@@ -246,60 +159,25 @@
             object-fit: cover;
         }
 
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #262626;
-        }
-
-        .stat-label {
+        .submit-btn {
+            background: var(--wobot-red);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
             font-weight: bold;
-            color: var(--text-muted);
+            cursor: pointer;
+            text-transform: uppercase;
         }
 
-        .stat-value {
-            color: white;
-        }
-
-        .scouter-notes {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #262626;
-            border-left: 4px solid var(--primary-color);
-            border-radius: 4px;
-            font-style: italic;
-            color: white;
-        }
-
-        #admin-upload-panel {
-            margin-bottom: 15px;
-            padding: 15px;
-            background: #1a1a1a;
-            border-radius: 8px;
-            border: 1px dashed var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        @media (max-width: 800px) {
-            #app-container {
-                padding: 15px 10px;
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            #admin-upload-panel {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
+        .sync-btn {
+            background: #f39c12;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 900;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -307,61 +185,105 @@
 <body>
 
     <div id="auth-screen">
-        <div class="auth-card">
-            <h2 style="color: var(--primary-color); margin-top: 0; letter-spacing: 2px;">WOBOT 141</h2>
-            <p style="color: var(--text-muted);">Scouting Dashboard Login</p>
-            <input type="email" id="email" placeholder="Email Address">
-            <input type="password" id="password" placeholder="Password">
-            <button onclick="handleLogin()">ENTER COMMAND CENTER</button>
-            <div id="auth-error"></div>
+        <div style="text-align:center; margin-top:100px;">
+            <h1 style="border:none;">WOBOT 141</h1>
+            <div class="scout-form" style="max-width:350px;">
+                <input type="email" id="email" placeholder="Email"><br>
+                <input type="password" id="password" placeholder="Passkey"><br>
+                <button onclick="handleLogin()" class="submit-btn">INITIALIZE</button>
+                <div id="auth-error" style="color:var(--wobot-red); margin-top:10px;"></div>
+            </div>
         </div>
     </div>
 
     <div id="app-container" class="hidden">
-        <button class="logout-btn" onclick="handleLogout()">Logout</button>
-
-        <div id="main-view">
-            <h1 style="margin-top:0;">WOBOT 141 - STRATEGY DASHBOARD</h1>
-
-            <div id="admin-upload-panel" class="hidden">
-                <div>
-                    <label for="lovat-upload"
-                        style="font-weight: bold; margin-right: 10px; color: var(--primary-color);">Admin: Update Match
-                        Data:</label>
-                    <input type="file" id="lovat-upload" accept=".csv" style="color: white; margin-top: 5px;">
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button onclick="uploadLovatData()" id="upload-btn"
-                        style="padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Upload</button>
-                    <button onclick="wipeLovatData()" id="wipe-btn"
-                        style="padding: 8px 15px; background: var(--primary-color); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Wipe</button>
-                </div>
+        <div class="user-info-bar">
+            <div>
+                <span id="conn-pill" class="status-pill online">Checking...</span>
+                <span id="user-display" style="margin-left:10px; font-weight:bold;"></span>
             </div>
-
-            <div id="main-table" class="table-container"></div>
+            <div id="sync-area" class="hidden">
+                <button onclick="uploadOfflineData()" class="sync-btn">🚀 SYNC (<span
+                        id="queue-count">0</span>)</button>
+                <button onclick="exportQueueToCSV()"
+                    style="background:#444; color:white; border:none; padding:10px; border-radius:5px; margin-left:5px; cursor:pointer;">💾
+                    BACKUP CSV</button>
+            </div>
+            <button onclick="handleLogout()"
+                style="background:none; border:1px solid var(--wobot-red); color:white; padding:5px 10px; cursor:pointer; border-radius:4px;">Logout</button>
         </div>
 
-        <div id="team-detail-view" class="hidden">
-            <div class="header-actions">
-                <button id="back-btn">← Back</button>
-                <h1 id="detail-team-title">
-                    <img id="tba-avatar" class="tba-avatar hidden" src="" alt="Team Avatar"
-                        onerror="this.classList.add('hidden')">
-                    <span id="detail-team-name">Team ---</span>
-                </h1>
-            </div>
+        <div class="nav-tabs">
+            <button id="btn-tasks" class="nav-btn active" onclick="switchView('view-tasks')">My Tasks</button>
+            <button id="btn-scout" class="nav-btn" onclick="switchView('view-scout')">Scout Robot</button>
+            <button id="btn-roster" class="nav-btn hidden" onclick="switchView('view-roster')">Master Roster</button>
+            <button id="btn-admin" class="nav-btn hidden" onclick="switchView('view-admin')">Admin Hub</button>
+        </div>
 
+        <div id="view-tasks" class="view-section">
+            <h1>Active Assignments</h1>
+            <div id="tasks-list"></div>
+        </div>
+
+        <div id="view-scout" class="view-section hidden">
+            <h1>Pit Entry</h1>
+            <form class="scout-form" id="scout-form" onsubmit="handleScoutSubmit(event)">
+                <label>Team Number</label><input type="number" id="f-team" required>
+                <label>Nickname</label><input type="text" id="f-nickname">
+                <label>Drivetrain</label>
+                <select id="f-drive">
+                    <option>Swerve</option>
+                    <option>Tank</option>
+                    <option>Mecanum</option>
+                    <option>Other</option>
+                </select>
+                <label>Robot Photo</label><input type="file" id="f-photo" accept="image/*" capture="environment">
+                <label>Strategic Notes</label><textarea id="f-notes" rows="4"></textarea>
+                <button type="submit" class="submit-btn" id="sub-btn">SAVE DATA</button>
+            </form>
+        </div>
+
+        <div id="view-roster" class="view-section hidden">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h1>Master Roster</h1>
+                <button onclick="downloadRosterCSV()"
+                    style="background:#28a745; color:white; border:none; padding:8px 15px; border-radius:4px; font-weight:bold;">📥
+                    EXPORT MASTER</button>
+            </div>
+            <div id="main-table"></div>
+        </div>
+
+        <div id="view-detail" class="view-section hidden">
+            <button class="nav-btn" onclick="switchView('view-roster')">← Back to Roster</button>
+            <h1 id="detail-team-name">Team ---</h1>
             <div class="dashboard-grid">
                 <div class="card">
-                    <h3>Robot Profile</h3>
+                    <h3>Specs</h3>
                     <div class="image-container" id="robot-image-container"></div>
                     <div id="pit-stats-content"></div>
                 </div>
-                <div class="card" style="overflow-x: auto;">
-                    <h3>Match Performance</h3>
-                    <div id="match-table" class="table-container"
-                        style="box-shadow: none; margin-top: 0; border: none; min-width: 500px;"></div>
+                <div class="card">
+                    <h3>Match History</h3>
+                    <div id="match-table"></div>
                 </div>
+            </div>
+        </div>
+
+        <div id="view-admin" class="view-section hidden">
+            <h1>Admin Hub</h1>
+            <div class="card">
+                <h3>Event Setup</h3>
+                <div style="display:flex; gap:10px; align-items:flex-end;">
+                    <div style="flex:1;"><label>Event Key</label><input type="text" id="event-key"
+                            placeholder="2024micmp"></div>
+                    <button onclick="fetchEventTeams()" class="submit-btn" style="width:auto; padding:12px 20px;">Sync
+                        TBA</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Dispatcher</h3>
+                <button onclick="autoAssign()" class="submit-btn"
+                    style="background:#28a745; width:auto; padding:10px 20px;">🚀 AUTO-ASSIGN BLOCKS</button>
             </div>
         </div>
     </div>
@@ -371,164 +293,251 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // Use your existing Supabase/Admin/TBA logic here!
-        const SUPABASE_URL = 'https://fqmycfmmlrbrjjdqdubx.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_3nYicQyxHJYsHXZ8FYaJsg_ZDmWcq71';
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // FIXED: Using a unique name to avoid "already declared" errors
+        const sbClient = window.supabase.createClient('https://fqmycfmmlrbrjjdqdubx.supabase.co', 'sb_publishable_3nYicQyxHJYsHXZ8FYaJsg_ZDmWcq71');
+
+        let isOnline = true;
+        let currentUser = null;
+        let currentUserRole = "scouter";
+        let globalData = [], globalLovat = [];
+        let mainTable;
 
         const ADMIN_EMAILS = ["carmelokyles@gmail.com", "carmelokyles@wobot141.com"];
-        let TBA_API_KEY = "";
-        const tbaNameCache = {};
 
-        async function getTBATeamName(teamNum) {
-            if (tbaNameCache[teamNum]) return tbaNameCache[teamNum];
-            if (!TBA_API_KEY) return "Unknown Team";
+        // --- CONNECTION MONITOR ---
+        async function checkConnection() {
+            const pill = document.getElementById('conn-pill');
+            const syncArea = document.getElementById('sync-area');
+            const queue = JSON.parse(localStorage.getItem('wobot_offline_queue') || '[]');
+
             try {
-                const response = await fetch(`https://www.thebluealliance.com/api/v3/team/frc${teamNum}/simple`, {
-                    headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    tbaNameCache[teamNum] = data.nickname;
-                    return data.nickname;
-                }
-            } catch (e) { console.error(e); }
-            return "Unknown Team";
-        }
+                const { error } = await sbClient.from('pit_scouting').select('id').limit(1);
+                isOnline = !error;
+            } catch { isOnline = false; }
 
+            if (isOnline) {
+                pill.innerText = "ONLINE"; pill.className = "status-pill online";
+                if (queue.length > 0) syncArea.classList.remove('hidden');
+                else syncArea.classList.add('hidden');
+            } else {
+                pill.innerText = "OFFLINE MODE"; pill.className = "status-pill offline";
+                syncArea.classList.remove('hidden');
+            }
+            document.getElementById('queue-count').innerText = queue.length;
+        }
+        setInterval(checkConnection, 5000);
+
+        // --- AUTH ---
         async function handleLogin() {
-            const email = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('auth-error');
-            errorDiv.innerText = "Authenticating...";
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) errorDiv.innerText = error.message;
+            const { error } = await sbClient.auth.signInWithPassword({ email, password });
+            if (error) document.getElementById('auth-error').innerText = error.message;
         }
 
-        async function handleLogout() { await supabaseClient.auth.signOut(); }
+        function handleLogout() {
+            sbClient.auth.signOut().then(() => {
+                // Manually force the UI to reset so it doesn't get stuck
+                document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('auth-screen').classList.remove('hidden');
+                currentUser = null;
+                currentUserRole = "scouter";
+                location.reload(); // Hard refresh to clear any lingering memory
+            });
+        }
 
-        supabaseClient.auth.onAuthStateChange((event, session) => {
+        sbClient.auth.onAuthStateChange(async (event, session) => {
             if (session) {
+                // USER LOGGED IN
+                currentUser = session.user.email;
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('app-container').classList.remove('hidden');
-                const userEmail = session.user.email;
-                if (ADMIN_EMAILS.includes(userEmail.toLowerCase())) {
-                    document.getElementById('admin-upload-panel').classList.remove('hidden');
-                }
-                if (globalPitData.length === 0 && globalLovatData.length === 0) initApp();
+                document.getElementById('user-display').innerText = currentUser;
+
+                try {
+                    const { data: profile } = await sbClient.from('profiles').select('role').eq('id', session.user.id).single();
+                    currentUserRole = profile ? profile.role : (ADMIN_EMAILS.includes(currentUser.toLowerCase()) ? 'owner' : 'scouter');
+                } catch { currentUserRole = 'scouter'; }
+
+                applyPermissions();
+                initApp();
             } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
+                // USER LOGGED OUT
                 document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('auth-screen').classList.remove('hidden');
+                currentUser = null;
             }
         });
 
-        async function uploadLovatData() {
-            const file = document.getElementById('lovat-upload').files[0];
-            if (!file) { alert("Select file first!"); return; }
-            document.getElementById('upload-btn').innerText = "Uploading...";
-            const { error } = await supabaseClient.storage.from('scouting-data').upload('lovat_data.csv', file, { upsert: true });
-            if (error) alert(error.message); else initApp();
-            document.getElementById('upload-btn').innerText = "Upload";
-        }
+        sbClient.auth.onAuthStateChange(async (event, session) => {
+            if (session) {
+                currentUser = session.user.email;
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                document.getElementById('user-display').innerText = currentUser;
 
-        async function wipeLovatData() {
-            if (!confirm("Wipe all Match Data?")) return;
-            await supabaseClient.storage.from('scouting-data').remove(['lovat_data.csv']);
-            globalLovatData = [];
-            await renderMainView();
-        }
+                try {
+                    const { data: profile } = await sbClient.from('profiles').select('role').eq('id', session.user.id).single();
+                    currentUserRole = profile ? profile.role : (ADMIN_EMAILS.includes(currentUser.toLowerCase()) ? 'owner' : 'scouter');
+                } catch { currentUserRole = 'scouter'; }
 
-        let globalPitData = [];
-        let globalLovatData = [];
-        let mainTable, matchTable;
-
-        function getTeamNumber(row) { return row["Team Number"] || row["teamNumber"] || row["team"] || row["Team"]; }
-        function getDriveDirectLink(url) {
-            if (!url) return null;
-            // This regex catches both the "id=" format and the "/d/ID" format
-            const match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-
-            if (match && match[1]) {
-                // The '=s1000' at the end tells Google to serve a high-res version (up to 1000px)
-                return `https://lh3.googleusercontent.com/d/${match[1]}=s1000`;
+                applyPermissions();
+                initApp();
             }
-            return url;
+        });
+
+        function applyPermissions() {
+            if (['owner', 'admin', 'scout_lead'].includes(currentUserRole)) document.getElementById('btn-roster').classList.remove('hidden');
+            if (['owner', 'admin'].includes(currentUserRole)) document.getElementById('btn-admin').classList.remove('hidden');
+        }
+
+        // --- SCOUTING LOGIC ---
+        async function handleScoutSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('sub-btn');
+            const team = document.getElementById('f-team').value;
+            const formData = {
+                team_number: team,
+                nickname: document.getElementById('f-nickname').value,
+                drivetrain: document.getElementById('f-drive').value,
+                impression: document.getElementById('f-notes').value,
+                scouter_name: currentUser,
+                created_at: new Date().toISOString()
+            };
+
+            if (!isOnline) {
+                saveToOfflineQueue(formData);
+                alert("OFFLINE: Saved to local log.");
+                e.target.reset();
+                return;
+            }
+
+            btn.innerText = "UPLOADING..."; btn.disabled = true;
+
+            try {
+                const photo = document.getElementById('f-photo').files[0];
+                if (photo) {
+                    const path = `robot-photos/frc${team}_${Date.now()}.jpg`;
+                    await sbClient.storage.from('scouting-data').upload(path, photo);
+                    formData.image_url = sbClient.storage.from('scouting-data').getPublicUrl(path).data.publicUrl;
+                }
+
+                const { error } = await sbClient.from('pit_scouting').insert([formData]);
+                if (error) throw error;
+
+                await sbClient.from('scout_assignments').update({ completed: true }).eq('scouter_email', currentUser).eq('team_number', team);
+                alert("Success!");
+            } catch (err) {
+                saveToOfflineQueue(formData);
+                alert("Upload Failed. Saved to local backup.");
+            }
+
+            btn.innerText = "SAVE DATA"; btn.disabled = false;
+            e.target.reset();
+            initApp();
+        }
+
+        function saveToOfflineQueue(data) {
+            let queue = JSON.parse(localStorage.getItem('wobot_offline_queue') || '[]');
+            queue.push(data);
+            localStorage.setItem('wobot_offline_queue', JSON.stringify(queue));
+            checkConnection();
+        }
+
+        async function uploadOfflineData() {
+            if (!isOnline) return alert("Still offline.");
+            let queue = JSON.parse(localStorage.getItem('wobot_offline_queue') || '[]');
+            const { error } = await sbClient.from('pit_scouting').insert(queue);
+            if (!error) {
+                localStorage.removeItem('wobot_offline_queue');
+                alert("Synced!");
+                initApp();
+            } else alert(error.message);
+        }
+
+        function exportQueueToCSV() {
+            const queue = JSON.parse(localStorage.getItem('wobot_offline_queue') || '[]');
+            const blob = new Blob([Papa.unparse(queue)], { type: 'text/csv' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `WOBOT_Backup_${Date.now()}.csv`;
+            link.click();
+        }
+
+        // --- UI & ROSTER ---
+        function switchView(id) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.remove('hidden');
+            const btnId = 'btn-' + id.split('-')[1];
+            if (document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
+            if (id === 'view-roster') renderRoster();
         }
 
         async function initApp() {
-            try {
-                if (!TBA_API_KEY) {
-                    const { data } = await supabaseClient.from('api_keys').select('key_value').eq('name', 'tba').single();
-                    if (data) TBA_API_KEY = data.key_value;
-                }
-                const pitRes = await fetch('data.csv').catch(() => null);
-                if (pitRes && pitRes.ok) {
-                    const txt = await pitRes.text();
-                    globalPitData = Papa.parse(txt, { header: true, skipEmptyLines: true }).data;
-                }
-                const { data: blob } = await supabaseClient.storage.from('scouting-data').download('lovat_data.csv');
-                if (blob) {
-                    const txt = await blob.text();
-                    globalLovatData = Papa.parse(txt, { header: true, skipEmptyLines: true }).data;
-                }
-                await renderMainView();
-            } catch (e) { console.error(e); }
+            checkConnection();
+            const { data: dbData } = await sbClient.from('pit_scouting').select('*');
+            globalData = dbData || [];
+
+            const { data: assignments } = await sbClient.from('scout_assignments').select('*').eq('scouter_email', currentUser).eq('completed', false);
+            const scouted = globalData.map(s => parseInt(s.team_number));
+            const pending = assignments ? assignments.filter(a => !scouted.includes(parseInt(a.team_number))) : [];
+
+            document.getElementById('tasks-list').innerHTML = pending.length ?
+                pending.map(a => `<div class="card">Team ${a.team_number} <button onclick="startScout(${a.team_number})" style="float:right;">Scout</button></div>`).join('') :
+                "<p>No assignments!</p>";
         }
 
-        async function renderMainView() {
-            const allTeams = new Set();
-            globalPitData.forEach(r => r["Team Number"] && allTeams.add(String(r["Team Number"])));
-            globalLovatData.forEach(r => { const t = getTeamNumber(r); if (t) allTeams.add(String(t)); });
+        function startScout(n) { switchView('view-scout'); document.getElementById('f-team').value = n; }
 
-            const data = [];
-            for (let num of Array.from(allTeams)) {
-                const pit = globalPitData.find(r => String(r["Team Number"]) === num);
-                if (pit) { data.push(pit); }
-                else {
-                    const name = await getTBATeamName(num);
-                    data.push({ "Team Number": num, "Team Name/Robot Nickname (Optional)": `${name} (TBA)`, "Drive Train Type": "N/A", "Scouter's Overall Impression (Is this a top-tier robot? Potential dark horse? Defense bot?)": "No Pit Data" });
-                }
-            }
-            if (mainTable) mainTable.destroy();
+        function renderRoster() {
             mainTable = new Tabulator("#main-table", {
-                data, layout: "fitColumns", pagination: "local", paginationSize: 15,
+                data: globalData,
+                layout: "fitColumns",
+                pagination: "local",
+                paginationSize: 15,
                 columns: [
-                    { title: "Team", field: "Team Number", headerFilter: "input", width: 100 },
-                    { title: "Nickname", field: "Team Name/Robot Nickname (Optional)" },
-                    { title: "Drivetrain", field: "Drive Train Type" },
-                    { title: "Impression", field: "Scouter's Overall Impression (Is this a top-tier robot? Potential dark horse? Defense bot?)" }
+                    { title: "AVATAR", field: "team_number", width: 70, hozAlign: "center", formatter: (c) => `<img src="https://www.thebluealliance.com/avatar/2026/frc${c.getValue()}.png" onerror="this.style.display='none'" style="height:30px; image-rendering: pixelated;">` },
+                    { title: "TEAM", field: "team_number", headerFilter: "input", width: 100 },
+                    { title: "DRIVE", field: "drivetrain" },
+                    { title: "NOTES", field: "impression" }
                 ],
             });
-            mainTable.on("rowClick", (e, row) => openTeamDetail(row.getData()));
+            mainTable.on("rowClick", (e, row) => showDetail(row.getData()));
         }
 
-        function openTeamDetail(pit) {
-            const num = String(pit["Team Number"]);
-            document.getElementById('main-view').classList.add('hidden');
-            document.getElementById('team-detail-view').classList.remove('hidden');
-            const avatar = document.getElementById('tba-avatar');
-            avatar.src = `https://www.thebluealliance.com/avatar/2026/frc${num}.png`;
-            avatar.classList.remove('hidden');
-            document.getElementById('detail-team-name').innerText = `Team ${num} - ${pit["Team Name/Robot Nickname (Optional)"] || "Unknown"}`;
-            const imgUrl = getDriveDirectLink(pit["Column 21"]);
-            const container = document.getElementById('robot-image-container');
-            container.innerHTML = imgUrl ? `<img src="${imgUrl}" class="robot-photo">` : `<div class="no-photo">No Photo</div>`;
-
-            document.getElementById('pit-stats-content').innerHTML = `
-                <div class="stat-row"><span class="stat-label">Drivetrain:</span><span class="stat-value">${pit["Drive Train Type"] || "N/A"}</span></div>
-                <div class="stat-row"><span class="stat-label">Build Rating:</span><span class="stat-value">${pit["How would you rate the robustness and build quality of the robot chassis?"] || "N/A"}/10</span></div>
-                <div class="scouter-notes">${pit["Scouter's Overall Impression (Is this a top-tier robot? Potential dark horse? Defense bot?)"] || "No notes."}</div>
-            `;
-            const matches = globalLovatData.filter(r => String(getTeamNumber(r)) === num);
-            if (matchTable) matchTable.destroy();
-            matchTable = new Tabulator("#match-table", { data: matches, layout: "fitColumns", autoColumns: true });
+        function showDetail(t) {
+            switchView('view-detail');
+            document.getElementById('detail-team-name').innerText = `TEAM ${t.team_number}`;
+            document.getElementById('robot-image-container').innerHTML = t.image_url ? `<img src="${t.image_url}" class="robot-photo">` : "NO PHOTO";
+            document.getElementById('pit-stats-content').innerHTML = `<p><strong>Drive:</strong> ${t.drivetrain}</p><p>${t.impression || ""}</p>`;
         }
 
-        document.getElementById('back-btn').addEventListener('click', () => {
-            document.getElementById('team-detail-view').classList.add('hidden');
-            document.getElementById('main-view').classList.remove('hidden');
-            mainTable.redraw();
-        });
+        function downloadRosterCSV() { mainTable.download("csv", "WOBOT_Master.csv"); }
+
+        // --- ADMIN ---
+        async function fetchEventTeams() {
+            const key = document.getElementById('event-key').value;
+            const { data: tbaKey } = await sbClient.from('api_keys').select('key_value').eq('name', 'tba').single();
+            const res = await fetch(`https://www.thebluealliance.com/api/v3/event/${key}/teams/simple`, { headers: { 'X-TBA-Auth-Key': tbaKey.key_value } });
+            const teams = await res.json();
+            localStorage.setItem('cachedEventTeams', JSON.stringify(teams.map(t => parseInt(t.team_number))));
+            alert("TBA Data Synced Locally!");
+        }
+
+        async function autoAssign() {
+            const { data: scouters } = await sbClient.from('profiles').select('email').eq('role', 'scouter');
+            const cached = JSON.parse(localStorage.getItem('cachedEventTeams') || '[]');
+            const unscouted = cached.filter(n => !globalData.map(d => parseInt(d.team_number)).includes(n)).sort((a, b) => a - b);
+            const emails = scouters.map(s => s.email);
+            const size = Math.ceil(unscouted.length / emails.length);
+            let assigns = [];
+            emails.forEach((e, i) => {
+                unscouted.slice(i * size, (i + 1) * size).forEach(num => assigns.push({ scouter_email: e, team_number: num }));
+            });
+            await sbClient.from('scout_assignments').insert(assigns);
+            alert("Assignments Balanced!"); initApp();
+        }
     </script>
 </body>
 
