@@ -1,117 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WOBOT 141 - Scouting Master</title>
 
     <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator_midnight.min.css" rel="stylesheet">
-    
+
     <style>
-        /* --- DARK MODE CSS VARIABLES --- */
+        /* --- WOBOT 141 COLOR SCHEME (Black, Grey, Red, White) --- */
         :root {
-            --primary-color: #4da3ff;
-            --primary-hover: #80bfff;
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #e0e0e0;
-            --text-muted: #aaaaaa;
+            --primary-color: #e62020;
+            /* WOBOT Red */
+            --primary-hover: #ff4d4d;
+            --bg-color: #0d0d0d;
+            /* Deep Black */
+            --card-bg: #1a1a1a;
+            /* Dark Grey Card */
+            --text-main: #ffffff;
+            /* White */
+            --text-muted: #cccccc;
+            /* Light Grey */
             --border-color: #333333;
-            --border-radius: 10px;
-            --shadow: 0 8px 16px rgba(0,0,0,0.5);
+            /* Medium Grey Border */
+            --border-radius: 8px;
+            --shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
         }
 
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); color: var(--text-main); }
-        h1 { color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
-        .hidden { display: none !important; }
-        
-        /* --- APP CONTAINER (Padded) --- */
-        #app-container { padding: 20px 40px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- APP CONTAINER --- */
+        #app-container {
+            padding: 20px 40px;
+        }
 
         /* --- AUTH SCREEN STYLES --- */
         #auth-screen {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: var(--bg-color);
+            padding: 20px;
+            box-sizing: border-box;
         }
+
         .auth-card {
-            background: var(--card-bg); padding: 40px; border-radius: var(--border-radius);
-            box-shadow: var(--shadow); border: 1px solid var(--border-color); width: 100%; max-width: 400px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--primary-color);
+            width: 100%;
+            max-width: 400px;
             text-align: center;
+            box-sizing: border-box;
         }
+
         .auth-card input {
-            width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid var(--border-color);
-            background: #2a2a2a; color: white; box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            background: #262626;
+            color: white;
+            box-sizing: border-box;
         }
+
         .auth-card button {
-            width: 100%; padding: 12px; margin-top: 15px; background: var(--primary-color); color: #000;
-            border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
         }
-        .auth-card button:hover { background: var(--primary-hover); }
-        #auth-error { color: #ff6b6b; margin-top: 10px; font-size: 14px; }
-        .logout-btn { float: right; background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+
+        .auth-card button:hover {
+            background: var(--primary-hover);
+        }
+
+        #auth-error {
+            color: var(--primary-color);
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            float: right;
+            background: #333333;
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #444;
+        }
 
         /* --- DASHBOARD STYLES --- */
-        #main-view { transition: opacity 0.3s ease; }
-        .table-container { box-shadow: var(--shadow); background-color: var(--card-bg); border-radius: var(--border-radius); margin-top: 15px; overflow: hidden; border: 1px solid var(--border-color); }
-        #team-detail-view { max-width: 1400px; margin: 0 auto; }
-        .header-actions { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        #back-btn { padding: 10px 20px; background: #0056b3; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.2s; }
-        #back-btn:hover { background: var(--primary-color); color: #000; }
-        #detail-team-title { margin: 0; font-size: 2em; color: var(--text-main); border: none; display: flex; align-items: center; gap: 15px;}
-        .tba-avatar { width: 40px; height: 40px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .dashboard-grid { display: grid; grid-template-columns: 350px 1fr; gap: 25px; align-items: start; }
-        .card { background: var(--card-bg); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--shadow); border: 1px solid var(--border-color); }
-        .card h3 { margin-top: 0; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .image-container { width: 100%; height: 300px; background-color: #2a2a2a; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border-color); }
-        .robot-photo { width: 100%; height: 100%; object-fit: cover; }
-        .no-photo { color: var(--text-muted); font-style: italic; }
-        .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-color); }
-        .stat-row:last-child { border-bottom: none; }
-        .stat-label { font-weight: bold; color: var(--text-muted); width: 40%;}
-        .stat-value { width: 60%; text-align: right; color: var(--text-main); }
-        .scouter-notes { margin-top: 15px; padding: 15px; background-color: #2a2a2a; border-left: 4px solid var(--primary-color); border-radius: 4px; font-style: italic; color: var(--text-main); }
+        #main-view {
+            transition: opacity 0.3s ease;
+        }
+
+        .table-container {
+            box-shadow: var(--shadow);
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            width: 100%;
+        }
+
+        /* Tabulator Custom Styling to Match Red Theme */
+        .tabulator {
+            background-color: var(--card-bg) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        .tabulator-header {
+            background-color: #262626 !important;
+            color: var(--primary-color) !important;
+            font-weight: bold !important;
+            border-bottom: 2px solid var(--primary-color) !important;
+        }
+
+        #team-detail-view {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        #back-btn {
+            padding: 10px 20px;
+            background: #333333;
+            color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        #back-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        #detail-team-title {
+            margin: 0;
+            font-size: 2em;
+            color: var(--text-main);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .tba-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 300px;
+            background-color: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .robot-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #262626;
+        }
+
+        .stat-label {
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .stat-value {
+            color: white;
+        }
+
+        .scouter-notes {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #262626;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            font-style: italic;
+            color: white;
+        }
+
+        #admin-upload-panel {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            border: 1px dashed var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 800px) {
+            #app-container {
+                padding: 15px 10px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            #admin-upload-panel {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <div id="auth-screen">
         <div class="auth-card">
-            <h2 style="color: var(--primary-color); margin-top: 0;">WOBOT 141</h2>
-            <p>Scouting Dashboard Login</p>
+            <h2 style="color: var(--primary-color); margin-top: 0; letter-spacing: 2px;">WOBOT 141</h2>
+            <p style="color: var(--text-muted);">Scouting Dashboard Login</p>
             <input type="email" id="email" placeholder="Email Address">
             <input type="password" id="password" placeholder="Password">
-            <button onclick="handleLogin()">Sign In</button>
+            <button onclick="handleLogin()">ENTER COMMAND CENTER</button>
             <div id="auth-error"></div>
         </div>
     </div>
 
     <div id="app-container" class="hidden">
         <button class="logout-btn" onclick="handleLogout()">Logout</button>
-        
+
         <div id="main-view">
-            <h1 style="margin-top:0;">WOBOT 141 - Pit & Match Scouting</h1>
-            <p>Click any row to view the robot picture, detailed pit specs, and match history.</p>
+            <h1 style="margin-top:0;">WOBOT 141 - STRATEGY DASHBOARD</h1>
+
+            <div id="admin-upload-panel" class="hidden">
+                <div>
+                    <label for="lovat-upload"
+                        style="font-weight: bold; margin-right: 10px; color: var(--primary-color);">Admin: Update Match
+                        Data:</label>
+                    <input type="file" id="lovat-upload" accept=".csv" style="color: white; margin-top: 5px;">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="uploadLovatData()" id="upload-btn"
+                        style="padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Upload</button>
+                    <button onclick="wipeLovatData()" id="wipe-btn"
+                        style="padding: 8px 15px; background: var(--primary-color); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Wipe</button>
+                </div>
+            </div>
+
             <div id="main-table" class="table-container"></div>
         </div>
 
         <div id="team-detail-view" class="hidden">
             <div class="header-actions">
-                <button id="back-btn">← Back to Roster</button>
+                <button id="back-btn">← Back</button>
                 <h1 id="detail-team-title">
-                    <img id="tba-avatar" class="tba-avatar hidden" src="" alt="Team Avatar" onerror="this.classList.add('hidden')">
+                    <img id="tba-avatar" class="tba-avatar hidden" src="" alt="Team Avatar"
+                        onerror="this.classList.add('hidden')">
                     <span id="detail-team-name">Team ---</span>
                 </h1>
             </div>
-            
+
             <div class="dashboard-grid">
                 <div class="card">
                     <h3>Robot Profile</h3>
                     <div class="image-container" id="robot-image-container"></div>
                     <div id="pit-stats-content"></div>
                 </div>
-                <div class="card">
-                    <h3>Match Performance (Lovat)</h3>
-                    <div id="match-table" class="table-container" style="box-shadow: none; margin-top: 0; border: none;"></div>
+                <div class="card" style="overflow-x: auto;">
+                    <h3>Match Performance</h3>
+                    <div id="match-table" class="table-container"
+                        style="box-shadow: none; margin-top: 0; border: none; min-width: 500px;"></div>
                 </div>
             </div>
         </div>
@@ -122,164 +371,165 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // ==========================================
-        // 1. SUPABASE INITIALIZATION
-        // ==========================================
+        // Use your existing Supabase/Admin/TBA logic here!
         const SUPABASE_URL = 'https://fqmycfmmlrbrjjdqdubx.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_3nYicQyxHJYsHXZ8FYaJsg_ZDmWcq71';
-        
-        // Fixed: assigned to 'supabaseClient' to avoid library conflicts
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ==========================================
-        // 2. AUTHENTICATION LOGIC
-        // ==========================================
+        const ADMIN_EMAILS = ["carmelokyles@gmail.com", "carmelokyles@wobot141.com"];
+        let TBA_API_KEY = "";
+        const tbaNameCache = {};
+
+        async function getTBATeamName(teamNum) {
+            if (tbaNameCache[teamNum]) return tbaNameCache[teamNum];
+            if (!TBA_API_KEY) return "Unknown Team";
+            try {
+                const response = await fetch(`https://www.thebluealliance.com/api/v3/team/frc${teamNum}/simple`, {
+                    headers: { 'X-TBA-Auth-Key': TBA_API_KEY }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    tbaNameCache[teamNum] = data.nickname;
+                    return data.nickname;
+                }
+            } catch (e) { console.error(e); }
+            return "Unknown Team";
+        }
+
         async function handleLogin() {
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const errorDiv = document.getElementById('auth-error');
-            
-            errorDiv.innerText = "Logging in...";
-            
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
-
-            if (error) {
-                errorDiv.innerText = error.message;
-            } else {
-                errorDiv.innerText = "";
-            }
+            errorDiv.innerText = "Authenticating...";
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) errorDiv.innerText = error.message;
         }
 
-        async function handleLogout() {
-            await supabaseClient.auth.signOut();
-        }
+        async function handleLogout() { await supabaseClient.auth.signOut(); }
 
-        // Listen for login/logout events to show/hide the dashboard
         supabaseClient.auth.onAuthStateChange((event, session) => {
             if (session) {
-                // User is logged in
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('app-container').classList.remove('hidden');
-                // Only load the data AFTER they are verified
-                if (globalPitData.length === 0) initApp(); 
+                const userEmail = session.user.email;
+                if (ADMIN_EMAILS.includes(userEmail.toLowerCase())) {
+                    document.getElementById('admin-upload-panel').classList.remove('hidden');
+                }
+                if (globalPitData.length === 0 && globalLovatData.length === 0) initApp();
             } else {
-                // User is logged out
                 document.getElementById('auth-screen').classList.remove('hidden');
                 document.getElementById('app-container').classList.add('hidden');
             }
         });
 
-        // ==========================================
-        // 3. DASHBOARD LOGIC
-        // ==========================================
+        async function uploadLovatData() {
+            const file = document.getElementById('lovat-upload').files[0];
+            if (!file) { alert("Select file first!"); return; }
+            document.getElementById('upload-btn').innerText = "Uploading...";
+            const { error } = await supabaseClient.storage.from('scouting-data').upload('lovat_data.csv', file, { upsert: true });
+            if (error) alert(error.message); else initApp();
+            document.getElementById('upload-btn').innerText = "Upload";
+        }
+
+        async function wipeLovatData() {
+            if (!confirm("Wipe all Match Data?")) return;
+            await supabaseClient.storage.from('scouting-data').remove(['lovat_data.csv']);
+            globalLovatData = [];
+            await renderMainView();
+        }
+
         let globalPitData = [];
         let globalLovatData = [];
         let mainTable, matchTable;
 
-        function getTeamNumber(row) {
-            return row["Team Number"] || row["teamNumber"] || row["team"] || row["Team"];
-        }
-
+        function getTeamNumber(row) { return row["Team Number"] || row["teamNumber"] || row["team"] || row["Team"]; }
         function getDriveDirectLink(url) {
             if (!url) return null;
+            // This regex catches both the "id=" format and the "/d/ID" format
             const match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (match && match[1]) { return `https://drive.google.com/uc?export=view&id=${match[1]}`; }
-            return url; 
+
+            if (match && match[1]) {
+                // The '=s1000' at the end tells Google to serve a high-res version (up to 1000px)
+                return `https://lh3.googleusercontent.com/d/${match[1]}=s1000`;
+            }
+            return url;
         }
 
         async function initApp() {
             try {
-                const [pitRes, lovatRes] = await Promise.all([
-                    fetch('data.csv').catch(() => null),
-                    fetch('lovat_data.csv').catch(() => null)
-                ]);
-
-                if (!pitRes || !pitRes.ok) throw new Error("Could not load data.csv");
-                const pitText = await pitRes.text();
-                globalPitData = Papa.parse(pitText, { header: true, skipEmptyLines: true }).data;
-
-                if (lovatRes && lovatRes.ok) {
-                    const lovatText = await lovatRes.text();
-                    globalLovatData = Papa.parse(lovatText, { header: true, skipEmptyLines: true }).data;
+                if (!TBA_API_KEY) {
+                    const { data } = await supabaseClient.from('api_keys').select('key_value').eq('name', 'tba').single();
+                    if (data) TBA_API_KEY = data.key_value;
                 }
-
-                renderMainView();
-            } catch (error) {
-                document.getElementById('main-view').innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
-            }
+                const pitRes = await fetch('data.csv').catch(() => null);
+                if (pitRes && pitRes.ok) {
+                    const txt = await pitRes.text();
+                    globalPitData = Papa.parse(txt, { header: true, skipEmptyLines: true }).data;
+                }
+                const { data: blob } = await supabaseClient.storage.from('scouting-data').download('lovat_data.csv');
+                if (blob) {
+                    const txt = await blob.text();
+                    globalLovatData = Papa.parse(txt, { header: true, skipEmptyLines: true }).data;
+                }
+                await renderMainView();
+            } catch (e) { console.error(e); }
         }
 
-        function renderMainView() {
+        async function renderMainView() {
+            const allTeams = new Set();
+            globalPitData.forEach(r => r["Team Number"] && allTeams.add(String(r["Team Number"])));
+            globalLovatData.forEach(r => { const t = getTeamNumber(r); if (t) allTeams.add(String(t)); });
+
+            const data = [];
+            for (let num of Array.from(allTeams)) {
+                const pit = globalPitData.find(r => String(r["Team Number"]) === num);
+                if (pit) { data.push(pit); }
+                else {
+                    const name = await getTBATeamName(num);
+                    data.push({ "Team Number": num, "Team Name/Robot Nickname (Optional)": `${name} (TBA)`, "Drive Train Type": "N/A", "Scouter's Overall Impression (Is this a top-tier robot? Potential dark horse? Defense bot?)": "No Pit Data" });
+                }
+            }
+            if (mainTable) mainTable.destroy();
             mainTable = new Tabulator("#main-table", {
-                data: globalPitData, 
-                layout: "fitColumns",
-                pagination: "local",
-                paginationSize: 15,
-                selectableRows: 1, 
+                data, layout: "fitColumns", pagination: "local", paginationSize: 15,
                 columns: [
                     { title: "Team", field: "Team Number", headerFilter: "input", width: 100 },
                     { title: "Nickname", field: "Team Name/Robot Nickname (Optional)" },
-                    { title: "Drivetrain", field: "Drive Train Type", headerFilter: "list", headerFilterParams: { valuesLookup: true } },
-                    { title: "Build Rating", field: "How would you rate the robustness and build quality of the robot chassis?", sorter:"number" },
+                    { title: "Drivetrain", field: "Drive Train Type" },
                     { title: "Impression", field: "Scouter's Overall Impression (Is this a top-tier robot? Potential dark horse? Defense bot?)" }
                 ],
             });
-
-            mainTable.on("rowClick", function(e, row){
-                openTeamDetail(row.getData());
-            });
+            mainTable.on("rowClick", (e, row) => openTeamDetail(row.getData()));
         }
 
-        function openTeamDetail(pitTeamData) {
-            const teamNum = String(pitTeamData["Team Number"]);
-
+        function openTeamDetail(pit) {
+            const num = String(pit["Team Number"]);
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('team-detail-view').classList.remove('hidden');
-
-            const avatarImg = document.getElementById('tba-avatar');
-            avatarImg.src = `https://www.thebluealliance.com/avatar/2026/frc${teamNum}.png`;
-            avatarImg.classList.remove('hidden'); 
-
-            document.getElementById('detail-team-name').innerText = `Team ${teamNum} - ${pitTeamData["Team Name/Robot Nickname (Optional)"] || "Unknown"}`;
-
-            const imgUrl = getDriveDirectLink(pitTeamData["Column 21"]); 
-            const imgContainer = document.getElementById('robot-image-container');
-            if (imgUrl) {
-                imgContainer.innerHTML = `<img src="${imgUrl}" alt="Robot Photo" class="robot-photo">`;
-            } else {
-                imgContainer.innerHTML = `<div class="no-photo">No Photo Uploaded</div>`;
-            }
+            const avatar = document.getElementById('tba-avatar');
+            avatar.src = `https://www.thebluealliance.com/avatar/2026/frc${num}.png`;
+            avatar.classList.remove('hidden');
+            document.getElementById('detail-team-name').innerText = `Team ${num} - ${pit["Team Name/Robot Nickname (Optional)"] || "Unknown"}`;
+            const imgUrl = getDriveDirectLink(pit["Column 21"]);
+            const container = document.getElementById('robot-image-container');
+            container.innerHTML = imgUrl ? `<img src="${imgUrl}" class="robot-photo">` : `<div class="no-photo">No Photo</div>`;
 
             document.getElementById('pit-stats-content').innerHTML = `
-                <div class="stat-row"><span class="stat-label">Drivetrain:</span><span class="stat-value">${pitTeamData["Drive Train Type"] || "N/A"}</span></div>
-                <div class="stat-row"><span class="stat-label">Motors:</span><span class="stat-value">${pitTeamData["Primary Motor Type for Drive Train"] || "N/A"}</span></div>
-                <div class="stat-row"><span class="stat-label">Weight/Height:</span><span class="stat-value">${pitTeamData["Robot Weight (lbs)"] || "?"} lbs / ${pitTeamData["Robot Height (inches)"] || "?"} in</span></div>
-                <div class="stat-row"><span class="stat-label">Build Rating:</span><span class="stat-value">${pitTeamData["How would you rate the robustness and build quality of the robot chassis?"] || "N/A"} / 10</span></div>
-                <div class="stat-row"><span class="stat-label">Cycle Time:</span><span class="stat-value">${pitTeamData["Estimated cycle time (time to acquire fuel, traverse field, and score)?"] || "N/A"} sec</span></div>
-                <div class="scouter-notes"><strong>Scouter Impression:</strong><br>${pitTeamData["Scouter's Overall Impression (Is this a top-tier robot? Potential dark horse? Defense bot?)"] || "None provided."}</div>
+                <div class="stat-row"><span class="stat-label">Drivetrain:</span><span class="stat-value">${pit["Drive Train Type"] || "N/A"}</span></div>
+                <div class="stat-row"><span class="stat-label">Build Rating:</span><span class="stat-value">${pit["How would you rate the robustness and build quality of the robot chassis?"] || "N/A"}/10</span></div>
+                <div class="scouter-notes">${pit["Scouter's Overall Impression (Is this a top-tier robot? Potential dark horse? Defense bot?)"] || "No notes."}</div>
             `;
-
-            const teamMatches = globalLovatData.filter(row => String(getTeamNumber(row)) === teamNum);
-            if (matchTable) { matchTable.destroy(); }
-            matchTable = new Tabulator("#match-table", {
-                data: teamMatches,
-                layout: "fitColumns",
-                pagination: "local",
-                paginationSize: 8,
-                autoColumns: true, 
-                placeholder: "No match data available from Lovat for this team yet.",
-            });
+            const matches = globalLovatData.filter(r => String(getTeamNumber(r)) === num);
+            if (matchTable) matchTable.destroy();
+            matchTable = new Tabulator("#match-table", { data: matches, layout: "fitColumns", autoColumns: true });
         }
 
         document.getElementById('back-btn').addEventListener('click', () => {
             document.getElementById('team-detail-view').classList.add('hidden');
             document.getElementById('main-view').classList.remove('hidden');
-            mainTable.redraw(); 
+            mainTable.redraw();
         });
-
     </script>
 </body>
+
 </html>
