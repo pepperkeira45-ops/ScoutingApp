@@ -1,16 +1,14 @@
-name: Auto-Update Pit Scouting CSV
+name: Manual-Only Pit Scouting CSV Update
 
 on:
-  workflow_dispatch: # This adds a "Run Workflow" button in GitHub
-  schedule:
-    - cron: '*/10 * * * *'
-    # This allows you to click a "Run workflow" button manually in GitHub
+  workflow_dispatch: # Keeps the "Run Workflow" button in GitHub Actions
+  # The 'schedule' block has been removed to stop automatic updates
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Allows the action to commit the new CSV to the repo
+      contents: write 
 
     steps:
       - name: Checkout Repository
@@ -29,15 +27,11 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          # Configure Git to act as a bot
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Add the newly downloaded CSV
           git add data.csv
           
-          # Commit only if there are changes. If the CSV is identical, it will safely skip.
-          git commit -m "Automated data.csv update from Google Sheets" || echo "No changes to commit"
+          git commit -m "Manual data.csv update triggered by user" || echo "No changes to commit"
           
-          # Push back to the main branch
           git push
