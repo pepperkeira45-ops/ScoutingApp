@@ -1457,6 +1457,10 @@
         });
 
         const OWNER_ID_LOCK = APP_CONFIG.ownerEmailLock;
+        const viewportWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+        console.log(`Viewport dimensions: ${viewportWidth}px x ${viewportHeight}px`);
 
         let isOnline = true;
         let currentUser = null;
@@ -2151,7 +2155,64 @@
                 let year = activeEventKey.substring(0, 4) || new Date().getFullYear();
 
                 let displayEPA = (capt.epa && !isNaN(Number(capt.epa))) ? Number(capt.epa).toFixed(1) : "-";
+                if (viewportHeight < 400) {
+                    let rowHtml = `
+                    <div class="card" style="display:flex; align-items:center; gap:20px; padding:15px; margin-bottom:0;">
+                        <div style="font-size:2rem; font-weight:900; color:var(--primary-color); width:40px; text-align:center;">${i}</div>
+                        
+                        <div style="flex:1.5; display:flex; align-items:center; gap:10px; background:#111; padding:10px; border-radius:8px; border:1px solid var(--border-grey);">
+                            <img src="https://www.thebluealliance.com/avatar/${year}/frc${capt.team_number}.png" onerror="this.style.display='none'" style="height:35px; border-radius:4px;">
+                            <div>
+                                <div style="font-weight:900; font-size:1.1rem; color:var(--text-white);">Team ${capt.team_number} <span style="font-size:0.7rem; color:var(--accent-color); text-transform:uppercase;">(Captain)</span></div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">Rank: ${capt.rank || '-'} | EPA: ${displayEPA} | Climb: ${capt.match_climb || '-'}</div>
+                            </div>
+                        </div>
 
+                        <div style="flex:1;">
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;writing-mode: vertical-lr; margin-bottom:2px; display:block;">Pick 1</label>
+                            <select onchange="updateDraftPick(${i}, 'p1', this.value)" style="width:100%;writing-mode: vertical-lr; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
+                                ${generateDraftOptions(sortedTeams, pickedIds, draftPicks[i].p1)}
+                            </select>
+                        </div>
+
+                        <div style="flex:1;">
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;writing-mode: vertical-lr; margin-bottom:2px; display:block;">Pick 2</label>
+                            <select onchange="updateDraftPick(${i}, 'p2', this.value)" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
+                                ${generateDraftOptions(sortedTeams, pickedIds, draftPicks[i].p2)}
+                            </select>
+                        </div>
+                    </div>
+                `;
+                }
+                else {
+                    let rowHtml = `
+                    <div class="card" style="display:flex; align-items:center; gap:20px; padding:15px; margin-bottom:0;">
+                        <div style="font-size:2rem; font-weight:900; color:var(--primary-color); width:40px; text-align:center;">${i}</div>
+                        
+                        <div style="flex:1.5; display:flex; align-items:center; gap:10px; background:#111; padding:10px; border-radius:8px; border:1px solid var(--border-grey);">
+                            <img src="https://www.thebluealliance.com/avatar/${year}/frc${capt.team_number}.png" onerror="this.style.display='none'" style="height:35px; border-radius:4px;">
+                            <div>
+                                <div style="font-weight:900; font-size:1.1rem; color:var(--text-white);">Team ${capt.team_number} <span style="font-size:0.7rem; color:var(--accent-color); text-transform:uppercase;">(Captain)</span></div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">Rank: ${capt.rank || '-'} | EPA: ${displayEPA} | Climb: ${capt.match_climb || '-'}</div>
+                            </div>
+                        </div>
+
+                        <div style="flex:1;">
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;writing-mode: vertical-lr; margin-bottom:2px; display:block;">Pick 1</label>
+                            <select onchange="updateDraftPick(${i}, 'p1', this.value)" style="width:100%;writing-mode: vertical-lr; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
+                                ${generateDraftOptions(sortedTeams, pickedIds, draftPicks[i].p1)}
+                            </select>
+                        </div>
+
+                        <div style="flex:1;">
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;writing-mode: vertical-lr; margin-bottom:2px; display:block;">Pick 2</label>
+                            <select onchange="updateDraftPick(${i}, 'p2', this.value)" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
+                                ${generateDraftOptions(sortedTeams, pickedIds, draftPicks[i].p2)}
+                            </select>
+                        </div>
+                    </div>
+                `;
+                }
                 let rowHtml = `
                     <div class="card" style="display:flex; align-items:center; gap:20px; padding:15px; margin-bottom:0;">
                         <div style="font-size:2rem; font-weight:900; color:var(--primary-color); width:40px; text-align:center;">${i}</div>
@@ -2165,20 +2226,21 @@
                         </div>
 
                         <div style="flex:1;">
-                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px; display:block;">Pick 1</label>
-                            <select onchange="updateDraftPick(${i}, 'p1', this.value)" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;writing-mode: vertical-lr; margin-bottom:2px; display:block;">Pick 1</label>
+                            <select onchange="updateDraftPick(${i}, 'p1', this.value)" style="width:100%;writing-mode: vertical-lr; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
                                 ${generateDraftOptions(sortedTeams, pickedIds, draftPicks[i].p1)}
                             </select>
                         </div>
 
                         <div style="flex:1;">
-                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px; display:block;">Pick 2</label>
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;writing-mode: vertical-lr; margin-bottom:2px; display:block;">Pick 2</label>
                             <select onchange="updateDraftPick(${i}, 'p2', this.value)" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
                                 ${generateDraftOptions(sortedTeams, pickedIds, draftPicks[i].p2)}
                             </select>
                         </div>
                     </div>
                 `;
+
                 container.innerHTML += rowHtml;
             }
         }
@@ -2192,7 +2254,7 @@
 
                 if ((!pickedIds.includes(num) && !isRankOne) || isSelected) {
                     let teamEPA = (t.epa && !isNaN(Number(t.epa))) ? Number(t.epa).toFixed(1) : "-";
-                    html += `<option value="${num}" ${isSelected ? 'selected' : ''}>${num} (Rk: ${t.rank || '-'} | EPA: ${teamEPA})</option>`;
+                    html += `<option value="${num}" ${isSelected ? 'selected' : ''}>${num} (Rk: ${t.rank || '-'} )</option>`;
                 }
             });
             return html;
