@@ -4,50 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WOBOT 141 - Command Center v4.1</title>
+    <title id="app-window-title">Loading Dashboard...</title>
 
     <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator_midnight.min.css" rel="stylesheet">
 
     <style>
         /* ==========================================================================
-           WOBOT 141 DESIGN SYSTEM & RESPONSIVE ENGINE
-           Status: Comprehensive Multi-Device Build (Alliance Pick Edition)
+           GLOBAL DESIGN SYSTEM
            ========================================================================== */
 
         :root {
-            /* CORE BRANDING COLORS */
-            --wobot-red: #e62020;
-            --wobot-red-hover: #ff4d4d;
-            --wobot-red-active: #cc0000;
+            /* Branding Colors */
+            --primary-color: #e62020;
+            --primary-hover: #ff4d4d;
+            --primary-active: #cc0000;
+            --primary-rgb: 230, 32, 32;
 
-            /* NEUTRAL & BACKGROUND PALETTE */
+            /* Background Palette */
             --bg-black: #080808;
             --card-grey: #141414;
             --field-bg: #1c1c1c;
             --border-grey: #2a2a2a;
             --border-light: #444444;
 
-            /* TYPOGRAPHY COLORS */
+            /* Typography */
             --text-white: #ffffff;
             --text-muted: #9e9e9e;
             --text-dark: #111111;
 
-            /* UTILITY & STATE COLORS */
-            --owner-purple: #9d4edd;
-            --owner-purple-hover: #b26bf0;
-            --success-green: #28a745;
-            --success-green-hover: #32c253;
-            --warning-gold: #f39c12;
-            --warning-gold-hover: #ffb033;
-            --danger-red: #dc3545;
+            /* Utility Colors */
+            --admin-color: #9d4edd;
+            --admin-hover: #b26bf0;
+            --admin-rgb: 157, 78, 221;
 
-            /* FLUID TYPOGRAPHY BASE (Scales automatically) */
+            --success-color: #28a745;
+            --success-hover: #32c253;
+
+            --accent-color: #f39c12;
+            --accent-hover: #ffb033;
+
+            --danger-color: #dc3545;
+
+            /* Fluid Typography */
             --font-base: clamp(14px, 1vw + 10px, 18px);
             --font-h1: clamp(1.8rem, 3vw + 1rem, 3.5rem);
             --font-h2: clamp(1.4rem, 2vw + 1rem, 2.2rem);
             --font-h3: clamp(1.1rem, 1.5vw + 0.8rem, 1.5rem);
 
-            /* LAYOUT VARIABLES */
+            /* Layout */
             --container-max: 1600px;
             --border-radius-sm: 6px;
             --border-radius-md: 12px;
@@ -55,11 +59,11 @@
             --border-radius-xl: 24px;
             --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             --shadow-float: 0 15px 35px rgba(0, 0, 0, 0.5);
-            --shadow-glow: 0 0 20px rgba(230, 32, 32, 0.3);
+            --shadow-glow: 0 0 20px rgba(var(--primary-rgb), 0.3);
         }
 
         /* ==========================================================================
-           1. RESET & BASE ARCHITECTURE
+           1. RESET
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -85,7 +89,7 @@
         }
 
         /* ==========================================================================
-           2. MAIN CONTAINERS & LAYOUT
+           2. LAYOUT CONTAINERS
            ========================================================================== */
         #app-container {
             padding: 30px 50px;
@@ -113,7 +117,6 @@
             transition: var(--transition-smooth);
         }
 
-        /* TABULATOR CONTAINER FIXES */
         #main-table,
         #pool-table,
         #picklist-table {
@@ -131,9 +134,8 @@
             border: 1px solid var(--border-grey);
         }
 
-        /* ALLIANCE PICK ROOM DRAG STYLES */
         .tabulator-row.tabulator-moving {
-            border: 2px solid var(--warning-gold) !important;
+            border: 2px solid var(--accent-color) !important;
             background: #222 !important;
             opacity: 0.9;
         }
@@ -142,15 +144,15 @@
            3. TYPOGRAPHY
            ========================================================================== */
         h1 {
-            color: var(--wobot-red);
-            border-bottom: 4px solid var(--wobot-red);
+            color: var(--primary-color);
+            border-bottom: 4px solid var(--primary-color);
             padding-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 4px;
             font-size: var(--font-h1);
             font-weight: 900;
             margin-bottom: 40px;
-            text-shadow: 0 4px 10px rgba(230, 32, 32, 0.2);
+            text-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.2);
         }
 
         h2 {
@@ -171,7 +173,7 @@
         }
 
         /* ==========================================================================
-           4. TOP NAVIGATION & STATUS BAR
+           4. NAVIGATION & STATUS BAR
            ========================================================================== */
         .user-info-bar {
             display: flex;
@@ -209,7 +211,6 @@
             border: 1px solid #991b1b;
         }
 
-        /* STATBOTICS BADGES */
         .stat-badge {
             display: inline-block;
             padding: 4px 10px;
@@ -271,14 +272,13 @@
         }
 
         .nav-btn.active {
-            background: var(--wobot-red);
+            background: var(--primary-color);
             color: white;
-            border-color: var(--wobot-red-hover);
+            border-color: var(--primary-hover);
             box-shadow: var(--shadow-glow);
             transform: translateY(-2px);
         }
 
-        /* SUB-TABS FOR DETAIL VIEW */
         .sub-nav-btn {
             background: transparent;
             color: var(--text-muted);
@@ -298,12 +298,12 @@
         }
 
         .sub-nav-btn.active {
-            color: var(--success-green);
-            border-bottom-color: var(--success-green);
+            color: var(--success-color);
+            border-bottom-color: var(--success-color);
         }
 
         /* ==========================================================================
-           5. FORMS & INPUTS (TACTICAL SCOUTING)
+           5. FORMS & INPUTS
            ========================================================================== */
         .scout-form {
             max-width: 950px;
@@ -320,7 +320,7 @@
 
         .form-section-header {
             font-size: 1.1rem;
-            color: var(--wobot-red);
+            color: var(--primary-color);
             font-weight: 900;
             letter-spacing: 3px;
             margin-top: 30px;
@@ -365,14 +365,14 @@
         .scout-form input:focus,
         .scout-form select:focus,
         .scout-form textarea:focus {
-            border-color: var(--wobot-red);
+            border-color: var(--primary-color);
             outline: none;
             background: #000;
-            box-shadow: 0 0 0 4px rgba(230, 32, 32, 0.15);
+            box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15);
         }
 
         /* ==========================================================================
-           6. COMPONENTS: BUTTONS & MEDIA
+           6. COMPONENTS
            ========================================================================== */
         .submit-btn,
         .owner-btn,
@@ -395,15 +395,15 @@
         }
 
         .submit-btn {
-            background: var(--wobot-red);
+            background: var(--primary-color);
             color: var(--text-white);
-            box-shadow: 0 5px 15px rgba(230, 32, 32, 0.3);
+            box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
         }
 
         .submit-btn:hover:not(:disabled) {
-            background: var(--wobot-red-hover);
+            background: var(--primary-hover);
             transform: translateY(-4px);
-            box-shadow: 0 12px 25px rgba(230, 32, 32, 0.5);
+            box-shadow: 0 12px 25px rgba(var(--primary-rgb), 0.5);
         }
 
         .submit-btn:active:not(:disabled) {
@@ -432,30 +432,30 @@
         }
 
         .owner-btn {
-            background: var(--owner-purple);
+            background: var(--admin-color);
             margin-top: 30px;
         }
 
         .owner-btn:hover {
-            background: var(--owner-purple-hover);
+            background: var(--admin-hover);
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(157, 78, 221, 0.4);
+            box-shadow: 0 10px 20px rgba(var(--admin-rgb), 0.4);
         }
 
         .sync-btn {
-            background: var(--warning-gold);
+            background: var(--accent-color);
             color: var(--text-dark);
             width: auto;
             padding: 12px 25px;
         }
 
         .sync-btn:hover {
-            background: var(--warning-gold-hover);
+            background: var(--accent-hover);
             transform: scale(1.05);
         }
 
         .toggle-auth-link {
-            color: var(--wobot-red);
+            color: var(--primary-color);
             font-size: 0.85rem;
             font-weight: 900;
             text-transform: uppercase;
@@ -472,7 +472,6 @@
             text-decoration: underline;
         }
 
-        /* Media Box (Stagnant layout) */
         .image-container {
             width: 100%;
             height: clamp(300px, 40vh, 500px);
@@ -483,7 +482,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 4px solid var(--wobot-red);
+            border: 4px solid var(--primary-color);
             box-shadow: inset 0 0 50px rgba(0, 0, 0, 1);
             position: relative;
         }
@@ -501,7 +500,6 @@
             padding: 20px;
         }
 
-        /* Admin Dashboard Scrollable Areas */
         .admin-scroll-box {
             background: #111;
             border: 1px solid var(--border-grey);
@@ -511,18 +509,17 @@
             overflow-y: auto;
         }
 
-        /* Master Owner Specific Section */
         .owner-section {
-            border: 4px solid var(--owner-purple);
+            border: 4px solid var(--admin-color);
             padding: 50px;
             border-radius: var(--border-radius-xl);
             margin-top: 60px;
-            background: linear-gradient(145deg, rgba(157, 78, 221, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+            background: linear-gradient(145deg, rgba(var(--admin-rgb), 0.05) 0%, rgba(0, 0, 0, 0) 100%);
             position: relative;
         }
 
         /* ==========================================================================
-           7. TOAST NOTIFICATIONS (Clutter-Free Engine)
+           7. TOAST NOTIFICATIONS
            ========================================================================== */
         #toast-container {
             position: fixed;
@@ -545,8 +542,8 @@
             color: var(--text-white);
             padding: 16px 24px;
             border-radius: var(--border-radius-md);
-            border-left: 8px solid var(--wobot-red);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(230, 32, 32, 0.15);
+            border-left: 8px solid var(--primary-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(var(--primary-rgb), 0.15);
             font-weight: 800;
             font-size: 0.95rem;
             letter-spacing: 1px;
@@ -574,7 +571,7 @@
         }
 
         /* ==========================================================================
-           8. MASSIVE RESPONSIVE ENGINE (20 MEDIA QUERIES)
+           8. RESPONSIVE QUERIES
            ========================================================================== */
         @media (min-width: 2560px) {
             #app-container {
@@ -887,7 +884,7 @@
             }
 
             ::-webkit-scrollbar-thumb:hover {
-                background: var(--wobot-red);
+                background: var(--primary-color);
             }
         }
 
@@ -909,7 +906,7 @@
 
     <div id="auth-screen">
         <div style="text-align:center; margin-top:80px; padding: 30px;">
-            <h1 style="border:none; font-size: 4rem; margin-bottom: 0;">WOBOT 141</h1>
+            <h1 id="auth-team-title" style="border:none; font-size: 4rem; margin-bottom: 0;">LOADING...</h1>
             <p
                 style="letter-spacing: 10px; color: var(--text-muted); margin-bottom: 50px; font-weight: 900; font-size: 1.2rem;">
                 SCOUTING DASHBOARD
@@ -919,22 +916,22 @@
 
                 <div style="display:flex; flex-direction:column; gap:12px; text-align:left;">
                     <label>EMAIL ADDRESS</label>
-                    <input type="email" id="email" placeholder="email@wobot141.com" autocomplete="email">
+                    <input type="email" id="email" placeholder="email@team.com" autocomplete="email">
                 </div>
 
                 <div style="display:flex; flex-direction:column; gap:12px; text-align:left;">
                     <label>PASSWORD</label>
                     <div style="position:relative; width:100%;">
                         <input type="password" id="password" placeholder="••••••••"
-                            style="padding-right: 60px; width:100%; box-sizing: border-box;">
+                            style="padding-right: 80px; width:100%; box-sizing: border-box;">
                         <span id="toggle-pass" onclick="togglePasswordVisibility()"
-                            style="position:absolute; right:20px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.8rem;">👁️</span>
+                            style="position:absolute; right:20px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:0.9rem; font-weight:bold; color:var(--text-muted);">SHOW</span>
                     </div>
                 </div>
 
                 <div id="registration-fields" class="hidden"
                     style="display:flex; flex-direction:column; gap:12px; text-align:left; margin-top: 10px; padding-top: 20px; border-top: 1px solid #333;">
-                    <label style="color: var(--warning-gold);">TEAM CODE (NEW ACCOUNTS ONLY)</label>
+                    <label style="color: var(--accent-color);">TEAM CODE (NEW ACCOUNTS ONLY)</label>
                     <input type="password" id="team-code" placeholder="Ask your Scouting Lead for the code">
                 </div>
 
@@ -951,7 +948,7 @@
                 </div>
 
                 <div id="auth-error"
-                    style="color:var(--wobot-red); margin-top:25px; font-weight: 950; font-size: 1rem; min-height: 28px;">
+                    style="color:var(--primary-color); margin-top:25px; font-weight: 950; font-size: 1rem; min-height: 28px;">
                 </div>
             </div>
         </div>
@@ -963,15 +960,16 @@
             <div style="display:flex; align-items:center; flex-wrap:wrap; gap:15px;">
                 <span id="conn-pill" class="status-pill online">ONLINE</span>
                 <span id="global-event-display"
-                    style="color:var(--warning-gold); font-weight:900; letter-spacing:2px; font-size:0.9rem; padding: 5px 12px; border: 1px dashed var(--warning-gold); border-radius: 5px;">EVENT:
+                    style="color:var(--accent-color); font-weight:900; letter-spacing:2px; font-size:0.9rem; padding: 5px 12px; border: 1px dashed var(--accent-color); border-radius: 5px;">EVENT:
                     LOADING...</span>
-                <span id="user-display" style="font-weight:950; color: var(--wobot-red); letter-spacing: 1.5px;"></span>
+                <span id="user-display"
+                    style="font-weight:950; color: var(--primary-color); letter-spacing: 1.5px;"></span>
             </div>
 
             <div style="display:flex; gap:15px; align-items: center; margin-top: 5px;">
                 <div id="sync-area" class="hidden">
                     <button onclick="uploadOfflineData()" class="sync-btn"
-                        style="background:var(--warning-gold); color:black; font-weight:900; padding:10px 20px; border-radius:8px; border:none;">🚀
+                        style="background:var(--accent-color); color:black; font-weight:900; padding:10px 20px; border-radius:8px; border:none;">
                         UPLOAD SAVED DATA (<span id="queue-count">0</span>)</button>
                 </div>
                 <button onclick="handleLogout()"
@@ -984,8 +982,8 @@
             <button id="btn-tasks" class="nav-btn active" onclick="switchView('view-tasks')">My Teams</button>
             <button id="btn-scout" class="nav-btn" onclick="switchView('view-scout')">Pit Scouting Form</button>
             <button id="btn-roster" class="nav-btn hidden" onclick="switchView('view-roster')">Team Data</button>
-            <button id="btn-picklist" class="nav-btn hidden" onclick="switchView('view-picklist')">Alliance Pick
-                Room</button>
+            <button id="btn-picklist" class="nav-btn hidden" onclick="switchView('view-picklist')">Alliance
+                Picklist</button>
             <button id="btn-admin" class="nav-btn hidden" onclick="switchView('view-admin')">Admin Dashboard</button>
         </div>
 
@@ -998,7 +996,7 @@
         </div>
 
         <div id="view-scout" class="view-section hidden">
-            <h1>2026 Pit Scouting Form</h1>
+            <h1 class="dynamic-year-form-title">2026 Pit Scouting Form</h1>
             <div class="dashboard-grid">
 
                 <div class="card" style="height: fit-content;">
@@ -1011,7 +1009,7 @@
                     <input type="file" id="f-photo" accept="image/*" capture="environment"
                         onchange="previewRobotImage(this)" style="display:none;">
                     <button onclick="document.getElementById('f-photo').click()" class="submit-btn"
-                        style="width:100%; background:#333; margin-bottom:15px;">📷 TAKE PICTURE</button>
+                        style="width:100%; background:#333; margin-bottom:15px;">TAKE PICTURE</button>
                 </div>
 
                 <form class="scout-form" id="scout-form" onsubmit="handleScoutSubmit(event)">
@@ -1144,7 +1142,7 @@
                         <button type="submit" class="submit-btn" id="sub-btn" style="flex: 2;">SUBMIT PIT
                             REPORT</button>
                         <button type="button" onclick="saveDraft()" class="submit-btn"
-                            style="flex: 1; background: var(--warning-gold); color: black;">💾 SAVE DRAFT</button>
+                            style="flex: 1; background: var(--accent-color); color: black;">SAVE DRAFT</button>
                     </div>
                 </form>
             </div>
@@ -1154,7 +1152,7 @@
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h1>Team Data</h1>
                 <button onclick="downloadRosterCSV()"
-                    style="background:var(--success-green); color:white; border:none; padding:15px 35px; border-radius:12px; font-weight:950; cursor:pointer; text-transform: uppercase; font-size: 0.9rem;">📥
+                    style="background:var(--success-color); color:white; border:none; padding:15px 35px; border-radius:12px; font-weight:950; cursor:pointer; text-transform: uppercase; font-size: 0.9rem;">
                     EXPORT DATA</button>
             </div>
             <p style="color:var(--text-muted); margin-bottom: 25px; font-weight: 800;">Displaying teams verified for the
@@ -1163,25 +1161,34 @@
         </div>
 
         <div id="view-picklist" class="view-section hidden">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h1 style="color: var(--owner-purple); border-color: var(--owner-purple);">Alliance Pick Room</h1>
-                <button onclick="saveMasterPicklist()" class="submit-btn"
-                    style="width:auto; background:var(--success-green); padding: 15px 30px; font-size:0.9rem;">💾 SAVE
-                    MASTER PICKLIST</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+                <h1 style="color: var(--admin-color); border-color: var(--admin-color); margin-bottom: 0;">Alliance
+                    Picklist</h1>
+                <div style="display: flex; gap: 15px;">
+                    <button onclick="clearDraft()" class="submit-btn"
+                        style="width:auto; background:var(--danger-color); padding: 12px 25px; font-size:0.85rem;">RESET
+                        DRAFT</button>
+                </div>
             </div>
-            <p style="color:var(--text-muted); margin-bottom: 25px; font-weight: 800;">Drag and drop teams from the
-                Available Pool to rank your final alliance selections.</p>
+            <p style="color:var(--text-muted); margin-bottom: 25px; font-weight: 800;">Assign picks to pull them from
+                the pool and shift remaining captains up.</p>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;">
-                <div>
-                    <h3 style="color:var(--warning-gold);">Available Team Pool</h3>
-                    <p style="font-size:0.85rem; color:#888; margin-bottom:10px;">Drag rows from here to the right.</p>
+            <div class="card" style="border-top: 5px solid var(--admin-color); margin-bottom: 20px;">
+                <h3 style="color: var(--admin-color);">Alliance Selection Board</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;" id="draft-board-container"></div>
+            </div>
+
+            <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; margin-top: 30px;">
+                <div class="card">
+                    <h3 style="color:var(--accent-color);">Available Pool</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Drag teams to the right
+                        to rank them.</p>
                     <div id="pool-table"></div>
                 </div>
-                <div>
-                    <h3 style="color:var(--success-green);">Final Ranked Picklist (1-24)</h3>
-                    <p style="font-size:0.85rem; color:#888; margin-bottom:10px;">Drag rows up and down to adjust rank.
-                    </p>
+                <div class="card">
+                    <h3 style="color:var(--success-color);">Ranked Picklist</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Double-click any row to
+                        view full profile.</p>
                     <div id="picklist-table"></div>
                 </div>
             </div>
@@ -1190,7 +1197,7 @@
         <div id="view-detail" class="view-section hidden">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
                 <h1 id="detail-team-name" style="border:none; margin:0;">TEAM PROFILE</h1>
-                <button class="nav-btn" onclick="switchView('view-roster')">← RETURN TO ROSTER</button>
+                <button class="nav-btn" onclick="switchView('view-roster')">RETURN</button>
             </div>
 
             <div style="margin-bottom: 35px; border-bottom: 2px solid var(--border-grey); display: flex; gap: 15px;">
@@ -1206,7 +1213,7 @@
                         <h3>Robot Photo</h3>
                         <div class="image-container" id="detail-image-box"></div>
 
-                        <h3 style="margin-top:40px; color: var(--wobot-red);">Technical Specifications</h3>
+                        <h3 style="margin-top:40px; color: var(--primary-color);">Technical Specifications</h3>
                         <div id="pit-stats-content"
                             style="background:#222; padding:30px; border-radius:15px; font-weight: 800; font-size: 1.1rem; line-height: 1.8;">
                         </div>
@@ -1218,20 +1225,20 @@
                             <div id="detail-notes-block"
                                 style="font-size: 1.3rem; line-height: 1.8; color: #f0f0f0; margin-bottom: 30px;"></div>
 
-                            <h3 style="margin-top:20px; color: var(--wobot-red);">Scouter Identified Vulnerabilities
+                            <h3 style="margin-top:20px; color: var(--primary-color);">Scouter Identified Vulnerabilities
                             </h3>
                             <div id="detail-vulnerabilities-block"
-                                style="font-size: 1.2rem; line-height: 1.8; color: var(--warning-gold);"></div>
+                                style="font-size: 1.2rem; line-height: 1.8; color: var(--accent-color);"></div>
                         </div>
 
-                        <div class="card" style="margin-bottom: 0; border-top: 5px solid var(--warning-gold);">
-                            <h3 style="color: var(--warning-gold);">📊 Statbotics Intelligence</h3>
+                        <div class="card" style="margin-bottom: 0; border-top: 5px solid var(--accent-color);">
+                            <h3 style="color: var(--accent-color);">Statbotics Intelligence</h3>
                             <div id="statbotics-content" style="font-size: 1.1rem; line-height: 1.8;">
                             </div>
                         </div>
 
-                        <div class="card" style="margin-bottom: 0; border-top: 5px solid var(--owner-purple);">
-                            <h3 style="color: var(--owner-purple);">📈 Lovat Match Averages</h3>
+                        <div class="card" style="margin-bottom: 0; border-top: 5px solid var(--admin-color);">
+                            <h3 style="color: var(--admin-color);">Lovat Match Averages</h3>
                             <div id="lovat-team-content" style="font-size: 1.1rem; line-height: 1.8; overflow-x: auto;">
                             </div>
                         </div>
@@ -1240,8 +1247,8 @@
             </div>
 
             <div id="detail-matches-tab" class="hidden">
-                <div class="card" style="border-top: 5px solid var(--success-green);">
-                    <h3 style="color: var(--success-green);">📝 Raw Match History</h3>
+                <div class="card" style="border-top: 5px solid var(--success-color);">
+                    <h3 style="color: var(--success-color);">Raw Match History</h3>
                     <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">Displays raw "by scout"
                         report data for consistency tracking and scouter notes.</p>
                     <div id="match-history-table"></div>
@@ -1253,34 +1260,34 @@
             <h1>Admin Dashboard</h1>
 
             <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 30px;">
-                <div class="card" style="border-top: 4px solid var(--wobot-red);">
-                    <h3 style="color: var(--wobot-red);">🏆 Scouting Leaderboard</h3>
+                <div class="card" style="border-top: 4px solid var(--primary-color);">
+                    <h3 style="color: var(--primary-color);">Scouting Leaderboard</h3>
                     <p style="color:var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Most pits successfully
                         scouted at the current event.</p>
                     <div id="admin-leaderboard" class="admin-scroll-box"></div>
                 </div>
-                <div class="card" style="border-top: 4px solid var(--warning-gold);">
-                    <h3 style="color: var(--warning-gold);">📋 Active Assignments</h3>
+                <div class="card" style="border-top: 4px solid var(--accent-color);">
+                    <h3 style="color: var(--accent-color);">Active Assignments</h3>
                     <p style="color:var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Pending tasks assigned
                         across the scouter pool.</p>
                     <div id="admin-pending-assignments" class="admin-scroll-box"></div>
                 </div>
             </div>
 
-            <div class="card" style="border: 2px solid var(--warning-gold);">
-                <h3 style="color: var(--warning-gold);">🌍 Event Settings</h3>
+            <div class="card" style="border: 2px solid var(--accent-color);">
+                <h3 style="color: var(--accent-color);">Event Settings</h3>
                 <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 15px;">Set the active competition.
                     This updates TBA rosters, Statbotics EPA, and internal databases.</p>
                 <div style="display:flex; gap:15px; align-items:flex-end; flex-wrap: wrap;">
                     <div style="flex:1; min-width: 250px;">
                         <label
-                            style="color:var(--warning-gold); font-weight:900; font-size:0.8rem; text-transform:uppercase;">TBA
+                            style="color:var(--accent-color); font-weight:900; font-size:0.8rem; text-transform:uppercase;">TBA
                             Event Key</label>
                         <input type="text" id="admin-event-input" placeholder="e.g. 2026micmp"
                             style="width:100%; padding:15px; border-radius:8px; border:1px solid var(--border-grey); background:#222; color:white; font-size:1.1rem; margin-top:5px;">
                     </div>
                     <button onclick="setGlobalEvent()" class="submit-btn"
-                        style="background:var(--warning-gold); color:black; width:auto; padding:15px 35px; font-size: 0.9rem;">SET
+                        style="background:var(--accent-color); color:black; width:auto; padding:15px 35px; font-size: 0.9rem;">SET
                         EVENT & SYNC DATA</button>
                 </div>
             </div>
@@ -1292,7 +1299,7 @@
                     <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">Automatically balance
                         un-scouted teams from the current event across all Scouters.</p>
                     <button onclick="autoAssign()" class="submit-btn"
-                        style="background:var(--success-green); width:100%; padding:18px 25px; font-size: 0.9rem;">🚀
+                        style="background:var(--success-color); width:100%; padding:18px 25px; font-size: 0.9rem;">
                         AUTO-BALANCE ROSTER</button>
                 </div>
 
@@ -1310,70 +1317,70 @@
                             <option value="">Loading Event Teams...</option>
                         </select>
                         <button onclick="manualAssign()" class="submit-btn"
-                            style="background:#444; border: 1px solid #666; width:100%; padding:15px 25px; font-size: 0.9rem; margin-top:5px;">🎯
+                            style="background:#444; border: 1px solid #666; width:100%; padding:15px 25px; font-size: 0.9rem; margin-top:5px;">
                             DIRECT ASSIGN TEAM</button>
                     </div>
                 </div>
 
             </div>
 
-            <div class="card" style="border: 2px solid var(--danger-red); margin-bottom: 30px;">
-                <h3 style="color: var(--danger-red);">⚠️ Danger Zone: Wipe Assignments</h3>
+            <div class="card" style="border: 2px solid var(--danger-color); margin-bottom: 30px;">
+                <h3 style="color: var(--danger-color);">Danger Zone: Wipe Assignments</h3>
                 <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">Permanently delete all
                     active and completed scouting assignments for the current event. This affects the <code
                         style="color:white; background:#333; padding:2px 5px; border-radius:4px;">scout_assignments</code>
                     table directly.</p>
                 <button onclick="wipeAssignments()" class="submit-btn"
-                    style="background:var(--danger-red); width:auto; padding:15px 35px; font-size: 0.9rem;">🗑️
+                    style="background:var(--danger-color); width:auto; padding:15px 35px; font-size: 0.9rem;">
                     WIPE EVENT ASSIGNMENTS</button>
             </div>
 
             <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
-                <div class="card" style="border-top: 4px solid var(--owner-purple);">
-                    <h3 style="color: var(--owner-purple);">Lovat Cloud Sync</h3>
+                <div class="card" style="border-top: 4px solid var(--admin-color);">
+                    <h3 style="color: var(--admin-color);">Lovat Cloud Sync</h3>
                     <p style="color:var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Pull existing data from
                         Supabase, or manually upload new Lovat exports.</p>
                     <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 10px;">
                         <button onclick="syncLovatFromStorage()" class="submit-btn"
-                            style="background:var(--wobot-red); width:100%; padding:12px 25px;">🔄 PULL ALL CLOUD LOVAT
+                            style="background:var(--primary-color); width:100%; padding:12px 25px;">PULL ALL CLOUD LOVAT
                             DATA</button>
                     </div>
                     <div style="display:flex; gap:10px; flex-wrap:wrap;">
                         <input type="file" id="f-lovat-team" accept=".csv"
                             onchange="uploadLovatToStorage(this, 'lovat_team_data.csv')" style="display:none;">
                         <button onclick="document.getElementById('f-lovat-team').click()" class="submit-btn"
-                            style="background:#444; border: 1px solid #666; flex:1; padding:12px;">⬆️ UPLOAD TEAM
+                            style="background:#444; border: 1px solid #666; flex:1; padding:12px;">UPLOAD TEAM
                             AVGS</button>
 
                         <input type="file" id="f-lovat-match" accept=".csv"
                             onchange="uploadLovatToStorage(this, 'lovat_match_data.csv')" style="display:none;">
                         <button onclick="document.getElementById('f-lovat-match').click()" class="submit-btn"
-                            style="background:#444; border: 1px solid #666; flex:1; padding:12px;">⬆️ UPLOAD MATCH
+                            style="background:#444; border: 1px solid #666; flex:1; padding:12px;">UPLOAD MATCH
                             LOG</button>
                     </div>
                 </div>
 
-                <div class="card" style="border: 2px solid var(--success-green);">
-                    <h3 style="color: var(--success-green);">📥 Smart Data Export</h3>
+                <div class="card" style="border: 2px solid var(--success-color);">
+                    <h3 style="color: var(--success-color);">Smart Data Export</h3>
                     <p style="color:var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">
                         Generates a CSV by merging the cloud <strong>lovat_team_data.csv</strong> with all current
                         <strong>Pit Scouting</strong> entries.
                     </p>
                     <button onclick="exportMergedLovatData()" class="submit-btn"
-                        style="background:var(--success-green); width:auto; padding:12px 25px;">
-                        🚀 GENERATE MERGED CSV
+                        style="background:var(--success-color); width:auto; padding:12px 25px;">
+                        GENERATE MERGED CSV
                     </button>
                 </div>
             </div>
 
             <div id="owner-only-tools" class="owner-section hidden">
-                <h2 style="color:var(--owner-purple); letter-spacing: 6px; font-size: 2rem;">👑 OWNER CONTROLS</h2>
+                <h2 style="color:var(--admin-color); letter-spacing: 6px; font-size: 2rem;">OWNER CONTROLS</h2>
                 <div class="card">
                     <h3>User Roles</h3>
                     <p style="color:var(--text-muted); font-size: 1rem; margin-bottom: 25px;">Assign roles (Strategist,
                         Drive Coach, Admin) or initiate a global permission reset.</p>
                     <div id="user-admin-table"></div>
-                    <button onclick="assignAllToScouter()" class="owner-btn">🛠️ RESET ALL USERS TO SCOUTER</button>
+                    <button onclick="assignAllToScouter()" class="owner-btn">RESET ALL USERS TO SCOUTER</button>
                 </div>
             </div>
         </div>
@@ -1383,12 +1390,47 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        /**
-         * LOCAL CACHE RECOVERY
-         */
+        /* ==========================================================================
+           GLOBAL APP CONFIGURATION
+           ========================================================================== */
+        const APP_CONFIG = {
+            teamNumber: "141",
+            teamName: "WOBOT",
+            appTitle: "Scouting Dashboard v5.1",
+            supabaseUrl: 'https://fqmycfmmlrbrjjdqdubx.supabase.co',
+            supabaseAnonKey: 'sb_publishable_3nYicQyxHJYsHXZ8FYaJsg_ZDmWcq71',
+            ownerEmailLock: "carmelokyles@gmail.com",
+            defaultEventYear: "2026"
+        };
+
+        function applyTeamBranding() {
+            document.getElementById('app-window-title').innerText = `${APP_CONFIG.teamName} ${APP_CONFIG.teamNumber} - ${APP_CONFIG.appTitle}`;
+            document.getElementById('auth-team-title').innerText = `${APP_CONFIG.teamName} ${APP_CONFIG.teamNumber}`;
+            document.getElementById('email').placeholder = `email@team${APP_CONFIG.teamNumber}.com`;
+
+            document.querySelectorAll('.dynamic-year-form-title').forEach(el => {
+                el.innerText = `${APP_CONFIG.defaultEventYear} Pit Scouting Form`;
+            });
+        }
+        applyTeamBranding();
+
+        /* ==========================================================================
+           LOCAL CACHE RECOVERY
+           ========================================================================== */
         let statboticsCache = {};
         let lovatTeamCache = {};
         let lovatMatchCache = {};
+
+        let draftPicks = {
+            1: { p1: "", p2: "" },
+            2: { p1: "", p2: "" },
+            3: { p1: "", p2: "" },
+            4: { p1: "", p2: "" },
+            5: { p1: "", p2: "" },
+            6: { p1: "", p2: "" },
+            7: { p1: "", p2: "" },
+            8: { p1: "", p2: "" }
+        };
 
         function loadCachesFromStorage() {
             try {
@@ -1401,13 +1443,10 @@
         }
         loadCachesFromStorage();
 
-        /**
-         * SUPABASE SYSTEM CONFIGURATION
-         */
-        const SB_URL = 'https://fqmycfmmlrbrjjdqdubx.supabase.co';
-        const SB_KEY = 'sb_publishable_3nYicQyxHJYsHXZ8FYaJsg_ZDmWcq71';
-
-        const sbClient = window.supabase.createClient(SB_URL, SB_KEY, {
+        /* ==========================================================================
+           SUPABASE CONFIGURATION
+           ========================================================================== */
+        const sbClient = window.supabase.createClient(APP_CONFIG.supabaseUrl, APP_CONFIG.supabaseAnonKey, {
             auth: {
                 storageKey: 'wobot_clean_session',
                 storage: window.localStorage,
@@ -1417,11 +1456,8 @@
             }
         });
 
-        const OWNER_ID_LOCK = "carmelokyles@gmail.com";
+        const OWNER_ID_LOCK = APP_CONFIG.ownerEmailLock;
 
-        /**
-         * GLOBAL APPLICATION STATE MANAGER
-         */
         let isOnline = true;
         let currentUser = null;
         let currentUserRole = "scouter";
@@ -1430,16 +1466,11 @@
         let mainTableInstance = null;
         let adminTableInstance = null;
         let matchTableInstance = null;
-
-        // Alliance Pick Room instances
         let poolTableInstance = null;
         let picklistTableInstance = null;
 
         let previousAssignmentCount = 0;
 
-        /**
-         * UI NOTIFICATION ENGINE (Anti-Clutter Version)
-         */
         function showToast(message) {
             if ("vibrate" in navigator) navigator.vibrate([50, 50, 50]);
             const container = document.getElementById('toast-container');
@@ -1460,20 +1491,15 @@
             }, 3000);
         }
 
-        /**
-         * AUTHENTICATION UX
-         */
         function togglePasswordVisibility() {
             const passField = document.getElementById('password');
             const icon = document.getElementById('toggle-pass');
             if (passField.type === 'password') {
                 passField.type = 'text';
-                icon.innerText = '🙈';
-                showToast("Passkey visible.");
+                icon.innerText = 'HIDE';
             } else {
                 passField.type = 'password';
-                icon.innerText = '👁️';
-                showToast("Passkey hidden.");
+                icon.innerText = 'SHOW';
             }
         }
 
@@ -1488,20 +1514,17 @@
                 loginControls.classList.add('hidden');
                 registerControls.classList.remove('hidden');
                 regFields.classList.remove('hidden');
-                document.getElementById('auth-form-container').style.border = '1px solid var(--warning-gold)';
-                showToast("MODE: Switched to Account Creation");
+                document.getElementById('auth-form-container').style.border = '1px solid var(--accent-color)';
+                showToast("Switched to Account Creation");
             } else {
                 registerControls.classList.add('hidden');
                 regFields.classList.add('hidden');
                 loginControls.classList.remove('hidden');
                 document.getElementById('auth-form-container').style.border = '1px solid var(--border-grey)';
-                showToast("MODE: Switched to Login");
+                showToast("Switched to Login");
             }
         }
 
-        /**
-         * NETWORK SENSING PROTOCOL
-         */
         async function checkConnection() {
             if (!currentUser) return;
             const pill = document.getElementById('conn-pill');
@@ -1525,9 +1548,6 @@
         }
         setInterval(checkConnection, 7000);
 
-        /**
-         * AUTHENTICATION HANDLERS
-         */
         async function handleLogin() {
             const emailField = document.getElementById('email');
             const passwordField = document.getElementById('password');
@@ -1537,17 +1557,18 @@
             const email = emailField.value.trim().toLowerCase();
             const password = passwordField.value.trim();
 
-            if (!email || !password) return showToast("ERROR: Missing credentials.");
+            if (!email || !password) return showToast("Missing credentials.");
 
             loginBtn.innerText = "LOGGING IN...";
             errorDiv.innerText = "";
-            showToast("AUTHENTICATING: Please wait...");
 
             const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
             if (error) {
                 errorDiv.innerText = `Error: ${error.message}`;
                 loginBtn.innerText = "LOG IN";
-                showToast("LOGIN FAILED: Please check your credentials.");
+                showToast("Login failed. Please check your credentials.");
+            } else {
+                await bootApplication();
             }
         }
 
@@ -1562,11 +1583,10 @@
             const password = passwordField.value.trim();
             const teamCodeInput = codeField.value.trim();
 
-            if (!email || !password || !teamCodeInput) return showToast("ERROR: Missing credentials or team code.");
+            if (!email || !password || !teamCodeInput) return showToast("Missing credentials or team code.");
 
             regBtn.innerText = "VERIFYING CODE...";
             errorDiv.innerText = "";
-            showToast("PROVISIONING: Setting up new scouter...");
 
             try {
                 const { data: codeData, error: codeError } = await sbClient.from('api_keys').select('key_value').eq('name', 'teamCode').single();
@@ -1574,7 +1594,7 @@
             } catch (err) {
                 errorDiv.innerText = `Database Error: ${err.message}`;
                 regBtn.innerText = "CREATE ACCOUNT";
-                return showToast("ERROR: Incorrect team code.");
+                return showToast("Incorrect team code.");
             }
 
             regBtn.innerText = "CREATING ACCOUNT...";
@@ -1583,77 +1603,95 @@
             if (error) {
                 errorDiv.innerText = `Registration Failed: ${error.message}`;
                 regBtn.innerText = "CREATE ACCOUNT";
-                showToast("ERROR: Account creation failed.");
+                showToast("Account creation failed.");
             } else {
-                showToast("ACCOUNT CREATED! Session Initiated.");
+                showToast("Account Created.");
+                await bootApplication();
             }
         }
 
-        function handleLogout() {
-            showToast("SECURE LOGOUT: Wiping session data...");
-            localStorage.clear();
-            sessionStorage.clear();
-            sbClient.auth.signOut().then(() => location.reload()).catch(() => location.reload());
+        async function handleLogout() {
+            showToast("Logging out and clearing local cache...");
+            try {
+                await sbClient.auth.signOut();
+            } catch (e) {
+                console.error("Logout error", e);
+            } finally {
+                for (let key in localStorage) {
+                    if (key.startsWith('sb-') || key.startsWith('wobot_')) {
+                        localStorage.removeItem(key);
+                    }
+                }
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.replace(window.location.origin);
+            }
         }
 
-        /**
-         * SYSTEM CORE: SESSION RECOVERY
-         */
-        (async function verifySessionOnLoad() {
+        /* ==========================================================================
+           AUTH HANDLER
+           ========================================================================== */
+        async function bootApplication() {
             try {
-                const { data: { session } } = await sbClient.auth.getSession();
+                const { data: { session }, error } = await sbClient.auth.getSession();
+
+                if (error) throw error;
+
                 if (session) {
-                    const { error } = await sbClient.from('api_keys').select('name').limit(1);
-                    if (error && error.code === 'PGRST301') throw new Error("Zombie Session");
+                    await launchSecureSession(session);
+                } else {
+                    showAuthScreen();
                 }
             } catch (err) {
-                localStorage.clear();
-                document.getElementById('auth-screen').classList.remove('hidden');
-                document.getElementById('app-container').classList.add('hidden');
+                console.warn("Session recovered from corrupted state:", err);
+                localStorage.removeItem('wobot_clean_session');
+                showAuthScreen();
             }
-        })();
+        }
 
-        sbClient.auth.onAuthStateChange(async (event, session) => {
-            const authScreen = document.getElementById('auth-screen');
-            const appContainer = document.getElementById('app-container');
+        function showAuthScreen() {
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('hidden');
+            currentUser = null;
+        }
 
-            if (!session) {
-                authScreen.classList.remove('hidden');
-                appContainer.classList.add('hidden');
-                currentUser = null;
-                return;
+        async function launchSecureSession(session) {
+            currentUser = session.user.email;
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('user-display').innerText = currentUser.toUpperCase();
+
+            if (currentUser.toLowerCase() === OWNER_ID_LOCK) {
+                currentUserRole = 'owner';
+            } else {
+                try {
+                    const { data: profile } = await sbClient.from('profiles').select('role').eq('id', session.user.id).single();
+                    currentUserRole = profile ? profile.role : 'scouter';
+                } catch (e) { currentUserRole = 'scouter'; }
             }
 
-            if (session) {
-                currentUser = session.user.email;
-                authScreen.classList.add('hidden');
-                appContainer.classList.remove('hidden');
-                document.getElementById('user-display').innerText = currentUser.toUpperCase();
+            initPermissionsUI();
+            await fetchGlobalEventKey();
 
-                if (currentUser.toLowerCase() === OWNER_ID_LOCK) {
-                    currentUserRole = 'owner';
-                } else {
-                    try {
-                        const { data: profile } = await sbClient.from('profiles').select('role').eq('id', session.user.id).single();
-                        currentUserRole = profile ? profile.role : 'scouter';
-                    } catch (e) { currentUserRole = 'scouter'; }
-                }
+            if (['strategist', 'drive_coach', 'admin', 'owner'].includes(currentUserRole)) {
+                await performBackgroundSync();
+            } else {
+                await refreshApplicationData();
+            }
+            checkConnection();
+        }
 
-                initPermissionsUI();
-                await fetchGlobalEventKey();
+        bootApplication();
 
-                if (['strategist', 'drive_coach', 'admin', 'owner'].includes(currentUserRole)) {
-                    await performBackgroundSync();
-                } else {
-                    await refreshApplicationData();
-                }
-                checkConnection();
+        sbClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT') {
+                showAuthScreen();
             }
         });
 
         async function performBackgroundSync() {
             if (!activeEventKey || activeEventKey === "Pending...") return;
-            showToast("ADMIN PROTOCOL: Quietly syncing data in background...");
+            showToast("Syncing background data...");
             try {
                 const { data: tbaKey } = await sbClient.from('api_keys').select('key_value').eq('name', 'tba').single();
                 if (tbaKey) {
@@ -1663,48 +1701,63 @@
                     let tbaMap = {};
                     teams.forEach(t => tbaMap[t.team_number] = t.nickname);
                     localStorage.setItem('tbaCache', JSON.stringify(tbaMap));
+
+                    const rankRes = await fetch(`https://www.thebluealliance.com/api/v3/event/${activeEventKey}/rankings`, { headers: { 'X-TBA-Auth-Key': tbaKey.key_value } });
+                    if (rankRes.ok) {
+                        const rankData = await rankRes.json();
+                        let rankMap = {};
+                        if (rankData && rankData.rankings) {
+                            rankData.rankings.forEach(r => rankMap[r.team_key.replace('frc', '')] = r.rank);
+                        }
+                        localStorage.setItem('tbaRankCache', JSON.stringify(rankMap));
+                    }
                 }
 
                 await syncStatboticsData(activeEventKey);
                 await syncLovatFromStorage();
 
                 await refreshApplicationData();
-                showToast("SYNC COMPLETE: All systems updated.");
+                showToast("Background sync complete.");
             } catch (err) { console.warn("Background sync failed: ", err); }
         }
 
         async function fetchGlobalEventKey() {
             try {
                 const { data, error } = await sbClient.from('api_keys').select('key_value').eq('name', 'active_event').single();
-                activeEventKey = (data && data.key_value) ? data.key_value : "2026default";
+                activeEventKey = (data && data.key_value) ? data.key_value : `${APP_CONFIG.defaultEventYear}default`;
                 document.getElementById('global-event-display').innerText = `EVENT: ${activeEventKey.toUpperCase()}`;
                 const adminInput = document.getElementById('admin-event-input');
                 if (adminInput) adminInput.value = activeEventKey;
+
+                let savedDraft = localStorage.getItem(`wobot_draft_${activeEventKey}`);
+                if (savedDraft) {
+                    try {
+                        draftPicks = JSON.parse(savedDraft);
+                    } catch (e) {
+                        console.warn("Corrupted draft state found. Starting fresh.");
+                        localStorage.removeItem(`wobot_draft_${activeEventKey}`);
+                    }
+                }
+
             } catch (err) { console.error("Failed to fetch global event:", err); }
         }
 
         function initPermissionsUI() {
             if ("Notification" in window && Notification.permission === "default") Notification.requestPermission();
-
-            // ROSTER ACCESS
             if (['strategist', 'drive_coach', 'admin', 'owner'].includes(currentUserRole)) {
                 document.getElementById('btn-roster').classList.remove('hidden');
                 document.getElementById('btn-picklist').classList.remove('hidden');
             }
-
-            // ADMIN ACCESS
             if (['admin', 'owner'].includes(currentUserRole)) {
                 document.getElementById('btn-admin').classList.remove('hidden');
             }
-
-            // OWNER ACCESS
             if (currentUserRole === 'owner') {
                 document.getElementById('owner-only-tools').classList.remove('hidden');
             }
         }
 
         async function syncStatboticsData(eventKey) {
-            showToast("SYNCING STATBOTICS: Fetching EPA data...");
+            showToast("Fetching EPA data...");
             try {
                 const res = await fetch(`https://api.statbotics.io/v3/team_events?event=${eventKey}`);
                 const data = await res.json();
@@ -1718,49 +1771,58 @@
             try {
                 const { data, error } = await sbClient.from('pit_scouting').select('*').eq('event_key', activeEventKey);
                 if (error) {
-                    if (error.code === 'PGRST301' || error.message.toLowerCase().includes('jwt')) return handleLogout();
+                    if (error.code === 'PGRST301' || error.message.toLowerCase().includes('jwt')) {
+                        console.warn("JWT Expired. Waiting for Supabase auto-refresh...");
+                        return;
+                    }
                     throw error;
                 }
 
                 const tbaMap = JSON.parse(localStorage.getItem('tbaCache') || '{}');
                 const cachedTeams = JSON.parse(localStorage.getItem('cachedEventTeams') || '[]');
+                const tbaRankCache = JSON.parse(localStorage.getItem('tbaRankCache') || '{}');
 
-                globalDataCache = cachedTeams.map(teamNum => {
-                    const pit = (data || []).find(p => parseInt(p.team_number) === teamNum) || {};
-                    const stats = statboticsCache[teamNum] || {};
-                    const avgs = lovatTeamCache[teamNum] || {};
+                globalDataCache = [];
+                cachedTeams.forEach(teamNum => {
+                    try {
+                        const pit = (data || []).find(p => parseInt(p.team_number) === teamNum) || {};
+                        const stats = statboticsCache[teamNum] || {};
+                        const avgs = lovatTeamCache[teamNum] || {};
 
-                    // Extract actual match climb attempts from Lovat Averages
-                    let l3 = parseFloat(avgs.percClimbThree) || 0;
-                    let l2 = parseFloat(avgs.percClimbTwo) || 0;
-                    let l1 = parseFloat(avgs.percClimbOne) || 0;
+                        let l3 = parseFloat(avgs.percClimbThree) || 0;
+                        let l2 = parseFloat(avgs.percClimbTwo) || 0;
+                        let l1 = parseFloat(avgs.percClimbOne) || 0;
 
-                    let matchClimbStr = "N/A";
-                    if (avgs.numMatches && parseInt(avgs.numMatches) > 0) {
-                        matchClimbStr = "None";
-                        if (l3 > 0) matchClimbStr = `L3 (${l3.toFixed(0)}%)`;
-                        else if (l2 > 0) matchClimbStr = `L2 (${l2.toFixed(0)}%)`;
-                        else if (l1 > 0) matchClimbStr = `L1 (${l1.toFixed(0)}%)`;
+                        let matchClimbStr = "N/A";
+                        if (avgs.numMatches && parseInt(avgs.numMatches) > 0) {
+                            matchClimbStr = "None";
+                            if (l3 > 0) matchClimbStr = `L3 (${l3.toFixed(0)}%)`;
+                            else if (l2 > 0) matchClimbStr = `L2 (${l2.toFixed(0)}%)`;
+                            else if (l1 > 0) matchClimbStr = `L1 (${l1.toFixed(0)}%)`;
+                        }
+
+                        let pitClimbRaw = pit.max_climb || "Unknown";
+                        let pitClimbStr = "Unknown";
+                        if (pitClimbRaw.includes("Level 3")) pitClimbStr = "L3";
+                        else if (pitClimbRaw.includes("Level 2")) pitClimbStr = "L2";
+                        else if (pitClimbRaw.includes("Level 1")) pitClimbStr = "L1";
+                        else if (pitClimbRaw.includes("Cannot")) pitClimbStr = "None";
+
+                        globalDataCache.push({
+                            team_number: teamNum,
+                            team_nickname: pit.team_nickname || tbaMap[teamNum] || "Unknown",
+                            lovat_points: avgs.avgTotalPoints ? parseFloat(avgs.avgTotalPoints).toFixed(1) : 0,
+                            lovat_role: avgs.mainRole || "N/A",
+                            match_climb: matchClimbStr,
+                            pit_climb: pitClimbStr,
+                            rank: tbaRankCache[teamNum] || '-',
+                            epa: stats.epa ? Number(stats.epa) : 0,
+                            ...pit,
+                            ...stats
+                        });
+                    } catch (err) {
+                        console.warn(`Schema Mismatch parsing Team ${teamNum}`, err);
                     }
-
-                    // Format Pit climb string for small table UI
-                    let pitClimbRaw = pit.max_climb || "Unknown";
-                    let pitClimbStr = "Unknown";
-                    if (pitClimbRaw.includes("Level 3")) pitClimbStr = "L3";
-                    else if (pitClimbRaw.includes("Level 2")) pitClimbStr = "L2";
-                    else if (pitClimbRaw.includes("Level 1")) pitClimbStr = "L1";
-                    else if (pitClimbRaw.includes("Cannot")) pitClimbStr = "None";
-
-                    return {
-                        team_number: teamNum,
-                        team_nickname: pit.team_nickname || tbaMap[teamNum] || "Unknown",
-                        lovat_points: avgs.avgTotalPoints ? parseFloat(avgs.avgTotalPoints).toFixed(1) : 0,
-                        lovat_role: avgs.mainRole || "N/A",
-                        match_climb: matchClimbStr,
-                        pit_climb: pitClimbStr,
-                        ...pit,
-                        ...stats
-                    };
                 });
 
                 renderActiveAssignments();
@@ -1768,7 +1830,13 @@
                     populateManualDispatchDropdowns();
                     loadAdminTelemetry(data || []);
                 }
-            } catch (err) { console.warn("Application Sync halted due to schema mismatch or offline status."); }
+                if (!document.getElementById('view-picklist').classList.contains('hidden')) {
+                    renderAlliancePickRoom();
+                    initRankingTool();
+                }
+            } catch (err) {
+                console.warn("Application Sync halted due to offline status.", err);
+            }
         }
 
         async function loadAdminTelemetry(pitData) {
@@ -1781,7 +1849,7 @@
             let leaderHTML = sortedLeaderboard.map((entry, index) => `
                 <div style="display:flex; justify-content:space-between; padding: 12px; border-bottom: 1px solid var(--border-grey);">
                     <span style="font-weight:bold; color:white;"><span style="color:var(--text-muted); margin-right:10px;">#${index + 1}</span>${entry[0].split('@')[0].toUpperCase()}</span>
-                    <span style="color:var(--wobot-red); font-weight:900;">${entry[1]} COMPLETED</span>
+                    <span style="color:var(--primary-color); font-weight:900;">${entry[1]}</span>
                 </div>
             `).join('');
             if (!leaderHTML) leaderHTML = "<p style='color:var(--text-muted); text-align:center; padding: 20px;'>Awaiting data collection for this event.</p>";
@@ -1799,11 +1867,11 @@
                     });
                     pendingHTML = Object.entries(grouped).map(entry => `
                         <div style="padding: 12px; border-bottom: 1px solid var(--border-grey);">
-                            <strong style="color:var(--warning-gold); display:block; margin-bottom:5px;">${entry[0]}</strong>
+                            <strong style="color:var(--accent-color); display:block; margin-bottom:5px;">${entry[0]}</strong>
                             <div style="font-size: 0.9rem; color:var(--text-muted); font-weight: bold;">TEAMS PENDING: ${entry[1].join(', ')}</div>
                         </div>
                     `).join('');
-                } else { pendingHTML = "<p style='color:var(--success-green); text-align:center; padding: 20px; font-weight: bold;'>All assigned tasks completed globally.</p>"; }
+                } else { pendingHTML = "<p style='color:var(--success-color); text-align:center; padding: 20px; font-weight: bold;'>All assigned tasks completed.</p>"; }
                 document.getElementById('admin-pending-assignments').innerHTML = pendingHTML;
             } catch (err) { console.error("Failed to load telemetry", err); }
         }
@@ -1826,16 +1894,15 @@
         }
 
         async function wipeAssignments() {
-            if (!activeEventKey || activeEventKey === "Pending...") return showToast("ERROR: No active event set.");
-            if (!confirm(`DANGER: Are you absolutely sure you want to wipe ALL scouting assignments for ${activeEventKey.toUpperCase()}? This cannot be undone.`)) return;
+            if (!activeEventKey || activeEventKey === "Pending...") return showToast("Error: No active event set.");
+            if (!confirm(`Are you absolutely sure you want to wipe ALL scouting assignments for ${activeEventKey.toUpperCase()}? This cannot be undone.`)) return;
 
-            showToast("EXECUTING: Wiping assignment database...");
             const { error } = await sbClient.from('scout_assignments').delete().eq('event_key', activeEventKey);
 
             if (!error) {
-                showToast("WIPE COMPLETE: All assignments for this event have been deleted.");
+                showToast("All assignments for this event have been deleted.");
                 refreshApplicationData();
-            } else { showToast(`WIPE FAILED: ${error.message}`); }
+            } else { showToast(`Wipe failed: ${error.message}`); }
         }
 
         function switchView(targetId) {
@@ -1849,7 +1916,12 @@
             if (document.getElementById(activeBtnId)) document.getElementById(activeBtnId).classList.add('active');
 
             if (targetId === 'view-roster') { setTimeout(() => { renderMasterRoster(); }, 50); }
-            if (targetId === 'view-picklist') { setTimeout(() => { renderAlliancePickRoom(); }, 50); }
+            if (targetId === 'view-picklist') {
+                setTimeout(() => {
+                    renderAlliancePickRoom();
+                    initRankingTool();
+                }, 50);
+            }
             if (targetId === 'view-admin' && currentUserRole === 'owner') loadUserAdminTable();
         }
 
@@ -1880,7 +1952,7 @@
 
             if (pendingTasks.length > previousAssignmentCount && previousAssignmentCount !== 0) {
                 if (Notification.permission === "granted") {
-                    new Notification("New Scouting Assignment", { body: `You have ${pendingTasks.length} teams waiting for inspection.`, icon: "https://www.thebluealliance.com/avatar/2026/frc141.png" });
+                    new Notification("New Scouting Assignment", { body: `You have ${pendingTasks.length} teams waiting for inspection.`, icon: `https://www.thebluealliance.com/avatar/${APP_CONFIG.defaultEventYear}/frc${APP_CONFIG.teamNumber}.png` });
                     if ("vibrate" in navigator) navigator.vibrate([200, 100, 200]);
                 }
             }
@@ -1888,8 +1960,8 @@
 
             if (pendingTasks.length > 0) {
                 list.innerHTML = pendingTasks.map(task => `
-                    <div class="card" style="display:flex; justify-content:space-between; align-items:center; border-left: 10px solid var(--wobot-red);">
-                        <div><span style="font-weight:950; font-size: 1.6rem; color: var(--wobot-red);">TEAM ${task.team_number}</span>
+                    <div class="card" style="display:flex; justify-content:space-between; align-items:center; border-left: 10px solid var(--primary-color);">
+                        <div><span style="font-weight:950; font-size: 1.6rem; color: var(--primary-color);">TEAM ${task.team_number}</span>
                         <div style="font-size: 0.8rem; color: var(--text-muted); text-transform:uppercase; letter-spacing: 1px;">Awaiting Pit Inspection</div></div>
                         <button onclick="launchScoutingSession(${task.team_number})" class="submit-btn" style="padding:12px 30px; font-size: 0.9rem;">INSPECT</button>
                     </div>
@@ -1900,7 +1972,7 @@
         }
 
         function launchScoutingSession(teamNum) {
-            showToast(`INITIALIZING: Team ${teamNum} inspection.`);
+            showToast(`Loading form for Team ${teamNum}`);
             switchView('view-scout');
             document.getElementById('f-team').value = teamNum;
             window.scrollTo(0, 0);
@@ -1914,7 +1986,7 @@
                     preview.src = e.target.result;
                     preview.classList.remove('hidden');
                     document.getElementById('img-placeholder').classList.add('hidden');
-                    showToast("PHOTO ATTACHED: Ready for submission.");
+                    showToast("Photo ready for submission.");
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -1928,18 +2000,17 @@
         }
 
         async function uploadOfflineData() {
-            showToast("INITIATING: Uploading offline buffer...");
-            if (!isOnline) return showToast("NETWORK PENDING: Wait for internet connection.");
+            if (!isOnline) return showToast("Waiting for internet connection.");
             let queue = JSON.parse(localStorage.getItem('wobot_offline_queue') || '[]');
-            if (queue.length === 0) return showToast("BUFFER EMPTY: No offline data to upload.");
+            if (queue.length === 0) return showToast("No offline data to upload.");
 
             const { error } = await sbClient.from('pit_scouting').insert(queue);
             if (!error) {
                 localStorage.removeItem('wobot_offline_queue');
-                showToast("UPLOAD SUCCESS: Buffer cleared.");
+                showToast("Upload successful.");
                 refreshApplicationData();
                 checkConnection();
-            } else showToast(`UPLOAD ERROR: ${error.message}`);
+            } else showToast(`Upload error: ${error.message}`);
         }
 
         function getFormData() {
@@ -1971,7 +2042,7 @@
             const draftData = getFormData();
             draftData.is_draft = true;
             saveToOfflineQueue(draftData);
-            showToast("DRAFT SAVED: Progress stored in temporary buffer.");
+            showToast("Draft saved locally.");
         }
 
         async function handleScoutSubmit(event) {
@@ -1979,12 +2050,11 @@
             const submitBtn = document.getElementById('sub-btn');
             const teamNum = document.getElementById('f-team').value;
 
-            showToast("PROCESSING: Generating submission payload...");
             const payload = getFormData();
 
             if (!isOnline) {
                 saveToOfflineQueue(payload);
-                showToast("OFFLINE MODE: Report saved to device memory.");
+                showToast("Report saved to device memory.");
                 event.target.reset();
                 switchView('view-tasks');
                 return;
@@ -1995,22 +2065,21 @@
             try {
                 const robotPhoto = document.getElementById('f-photo').files[0];
                 if (robotPhoto) {
-                    showToast("UPLOADING: Sending image to server...");
+                    showToast("Uploading image...");
                     const storagePath = `robot-photos/frc${teamNum}_${activeEventKey}_${Date.now()}.jpg`;
                     const { error: uploadError } = await sbClient.storage.from('scouting-data').upload(storagePath, robotPhoto);
                     if (uploadError) throw new Error("Photo upload failed.");
                     payload.image_url = sbClient.storage.from('scouting-data').getPublicUrl(storagePath).data.publicUrl;
                 }
 
-                showToast("TRANSMITTING: Pushing data to master server...");
                 const { error: dbError } = await sbClient.from('pit_scouting').insert([payload]);
                 if (dbError) throw dbError;
 
                 await sbClient.from('scout_assignments').update({ completed: true }).eq('scouter_email', currentUser).eq('team_number', teamNum).eq('event_key', activeEventKey);
 
-                showToast("SUCCESS: Pit scouting report submitted.");
+                showToast("Report submitted successfully.");
             } catch (err) {
-                showToast(`SUBMISSION ERROR: ${err.message}`);
+                showToast(`Submission error: ${err.message}`);
                 saveToOfflineQueue(payload);
             }
 
@@ -2032,7 +2101,7 @@
                 pagination: "local",
                 paginationSize: 15,
                 columns: [
-                    { title: "AVATAR", field: "team_number", width: 90, hozAlign: "center", formatter: (cell) => `<img src="https://www.thebluealliance.com/avatar/2026/frc${cell.getValue()}.png" onerror="this.style.display='none'" style="height:40px;">` },
+                    { title: "AVATAR", field: "team_number", width: 90, hozAlign: "center", formatter: (cell) => `<img src="https://www.thebluealliance.com/avatar/${activeEventKey.substring(0, 4)}/frc${cell.getValue()}.png" onerror="this.style.display='none'" style="height:40px;">` },
                     { title: "TEAM", field: "team_number", headerFilter: "input", width: 100, sorter: "number", hozAlign: "center" },
                     { title: "NICKNAME", field: "team_nickname", headerFilter: "input", widthGrow: 1.5 },
                     {
@@ -2047,104 +2116,159 @@
                         }
                     },
                     { title: "LOVAT PTS", field: "lovat_points", width: 110, hozAlign: "center" },
-                    { title: "LOVAT ROLE", field: "lovat_role", width: 130, headerFilter: "input" },
-                    { title: "PIT DRIVE", field: "drivetrain", headerFilter: "input", formatter: (cell) => cell.getValue() || "Not Scouted" },
-                    { title: "PIT STATUS", field: "id", hozAlign: "center", width: 120, formatter: (cell) => cell.getValue() ? "✅" : "❌" }
+                    { title: "MATCH CLIMB", field: "match_climb", width: 130, hozAlign: "center" },
+                    { title: "PIT CLIMB", field: "pit_climb", width: 100, hozAlign: "center" },
+                    { title: "PIT STATUS", field: "id", hozAlign: "center", width: 120, formatter: (cell) => cell.getValue() ? "Yes" : "No" }
                 ],
             });
             mainTableInstance.on("rowClick", (e, row) => launchDrillDownProfile(row.getData()));
         }
 
-        /**
-         * ALLIANCE PICK ROOM: DRAG & DROP PICKLIST ENGINE
-         */
-        async function renderAlliancePickRoom() {
-            let savedPicklistData = [];
-            try {
-                const { data: dbPicklists } = await sbClient.from('picklists').select('ranked_teams').eq('event_key', activeEventKey).single();
-                if (dbPicklists && dbPicklists.ranked_teams) {
-                    const savedTeamNums = dbPicklists.ranked_teams;
-                    savedPicklistData = savedTeamNums.map(num => globalDataCache.find(d => d.team_number === num)).filter(d => d);
+        function renderAlliancePickRoom() {
+            if (globalDataCache.length === 0) return;
+            const container = document.getElementById('draft-board-container');
+            container.innerHTML = "";
+
+            let pickedIds = [];
+            for (let a = 1; a <= 8; a++) {
+                if (draftPicks[a].p1) pickedIds.push(parseInt(draftPicks[a].p1));
+                if (draftPicks[a].p2) pickedIds.push(parseInt(draftPicks[a].p2));
+            }
+
+            let sortedTeams = [...globalDataCache].sort((a, b) => {
+                let rankA = parseInt(a.rank) || 9999;
+                let rankB = parseInt(b.rank) || 9999;
+                if (rankA !== rankB) return rankA - rankB;
+                let epaA = parseFloat(a.epa) || 0;
+                let epaB = parseFloat(b.epa) || 0;
+                return epaB - epaA;
+            });
+
+            let captainPool = sortedTeams.filter(t => !pickedIds.includes(parseInt(t.team_number)));
+
+            for (let i = 1; i <= 8; i++) {
+                let capt = captainPool[i - 1] || { team_number: "???", rank: "-", epa: 0, match_climb: "-" };
+                let year = activeEventKey.substring(0, 4) || new Date().getFullYear();
+
+                let displayEPA = (capt.epa && !isNaN(Number(capt.epa))) ? Number(capt.epa).toFixed(1) : "-";
+
+                let rowHtml = `
+                    <div class="card" style="display:flex; align-items:center; gap:20px; padding:15px; margin-bottom:0;">
+                        <div style="font-size:2rem; font-weight:900; color:var(--primary-color); width:40px; text-align:center;">${i}</div>
+                        
+                        <div style="flex:1.5; display:flex; align-items:center; gap:10px; background:#111; padding:10px; border-radius:8px; border:1px solid var(--border-grey);">
+                            <img src="https://www.thebluealliance.com/avatar/${year}/frc${capt.team_number}.png" onerror="this.style.display='none'" style="height:35px; border-radius:4px;">
+                            <div>
+                                <div style="font-weight:900; font-size:1.1rem; color:var(--text-white);">Team ${capt.team_number} <span style="font-size:0.7rem; color:var(--accent-color); text-transform:uppercase;">(Captain)</span></div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">Rank: ${capt.rank || '-'} | EPA: ${displayEPA} | Climb: ${capt.match_climb || '-'}</div>
+                            </div>
+                        </div>
+
+                        <div style="flex:1;">
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px; display:block;">Pick 1</label>
+                            <select onchange="updateDraftPick(${i}, 'p1', this.value)" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
+                                ${generateDraftOptions(sortedTeams, pickedIds, draftPicks[i].p1)}
+                            </select>
+                        </div>
+
+                        <div style="flex:1;">
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px; display:block;">Pick 2</label>
+                            <select onchange="updateDraftPick(${i}, 'p2', this.value)" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-weight:bold;">
+                                ${generateDraftOptions(sortedTeams, pickedIds, draftPicks[i].p2)}
+                            </select>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += rowHtml;
+            }
+        }
+
+        function generateDraftOptions(sortedTeams, pickedIds, currentValue) {
+            let html = `<option value="">-- Available --</option>`;
+            sortedTeams.forEach(t => {
+                let num = parseInt(t.team_number);
+                let isSelected = (currentValue && parseInt(currentValue) === num);
+                let isRankOne = parseInt(t.rank) === 1;
+
+                if ((!pickedIds.includes(num) && !isRankOne) || isSelected) {
+                    let teamEPA = (t.epa && !isNaN(Number(t.epa))) ? Number(t.epa).toFixed(1) : "-";
+                    html += `<option value="${num}" ${isSelected ? 'selected' : ''}>${num} (Rk: ${t.rank || '-'} | EPA: ${teamEPA})</option>`;
                 }
-            } catch (e) { console.warn("No existing picklist found or accessible."); }
+            });
+            return html;
+        }
 
-            const savedIds = savedPicklistData.map(d => d.team_number);
-            const poolData = globalDataCache.filter(d => !savedIds.includes(d.team_number));
+        function updateDraftPick(allianceIdx, pickSlot, teamValue) {
+            draftPicks[allianceIdx][pickSlot] = teamValue;
+            localStorage.setItem(`wobot_draft_${activeEventKey}`, JSON.stringify(draftPicks));
+            renderAlliancePickRoom();
+        }
 
+        function clearDraft() {
+            if (!confirm("Are you sure you want to reset the draft board? All picks will be cleared.")) return;
+            draftPicks = { 1: { p1: "", p2: "" }, 2: { p1: "", p2: "" }, 3: { p1: "", p2: "" }, 4: { p1: "", p2: "" }, 5: { p1: "", p2: "" }, 6: { p1: "", p2: "" }, 7: { p1: "", p2: "" }, 8: { p1: "", p2: "" } };
+            localStorage.removeItem(`wobot_draft_${activeEventKey}`);
+            renderAlliancePickRoom();
+            showToast("Draft Board Reset.");
+        }
+
+        function initRankingTool() {
             if (poolTableInstance) poolTableInstance.destroy();
             if (picklistTableInstance) picklistTableInstance.destroy();
 
-            const commonColumns = [
-                { rowHandle: true, formatter: "handle", headerSort: false, frozen: true, width: 40, minWidth: 40 },
-                { title: "TEAM", field: "team_number", width: 80, hozAlign: "center" },
-                { title: "EPA", field: "epa", width: 70, hozAlign: "center", formatter: cell => cell.getValue() ? Number(cell.getValue()).toFixed(1) : "-" },
-                { title: "LOVAT PTS", field: "lovat_points", width: 100, hozAlign: "center" },
-                { title: "MATCH CLIMB", field: "match_climb", width: 130, hozAlign: "center" },
-                { title: "PIT CLIMB", field: "pit_climb", width: 100, hozAlign: "center" },
-                { title: "DRIVE", field: "drivetrain" }
-            ];
+            let poolData = [];
+            let pickedIds = [];
+            for (let a = 1; a <= 8; a++) {
+                if (draftPicks[a].p1) pickedIds.push(parseInt(draftPicks[a].p1));
+                if (draftPicks[a].p2) pickedIds.push(parseInt(draftPicks[a].p2));
+            }
+
+            globalDataCache.forEach(t => {
+                if (!pickedIds.includes(parseInt(t.team_number))) {
+                    poolData.push({ ...t });
+                }
+            });
 
             poolTableInstance = new Tabulator("#pool-table", {
                 data: poolData,
                 layout: "fitColumns",
                 movableRows: true,
                 movableRowsConnectedTables: "#picklist-table",
-                movableRowsReceiver: "insert",
+                movableRowsReceiver: "add",
                 movableRowsSender: "delete",
-                placeholder: "All teams have been added to the picklist.",
-                columns: commonColumns
-            });
-
-            picklistTableInstance = new Tabulator("#picklist-table", {
-                data: savedPicklistData,
-                layout: "fitColumns",
-                movableRows: true,
-                movableRowsConnectedTables: "#pool-table",
-                movableRowsReceiver: "insert",
-                movableRowsSender: "delete",
-                placeholder: "Drag teams here to build the alliance.",
-                rowFormatter: function (row) {
-                    row.getElement().style.fontWeight = "bold";
-                },
                 columns: [
-                    { formatter: "rownum", hozAlign: "center", width: 40 },
-                    ...commonColumns
+                    { rowHandle: true, formatter: "handle", headerSort: false, frozen: true, width: 30, minWidth: 30 },
+                    { title: "Team", field: "team_number", width: 80 },
+                    { title: "EPA", field: "epa", formatter: (cell) => Number(cell.getValue() || 0).toFixed(1) },
+                    { title: "Rank", field: "rank", width: 70 }
                 ]
             });
 
-            poolTableInstance.on("rowDblClick", (e, row) => launchDrillDownProfile(row.getData()));
+            picklistTableInstance = new Tabulator("#picklist-table", {
+                data: [],
+                layout: "fitColumns",
+                movableRows: true,
+                movableRowsConnectedTables: "#pool-table",
+                movableRowsReceiver: "add",
+                movableRowsSender: "delete",
+                columns: [
+                    { rowHandle: true, formatter: "handle", headerSort: false, frozen: true, width: 30, minWidth: 30 },
+                    { title: "#", formatter: "rownum", width: 50, hozAlign: "center" },
+                    { title: "Team", field: "team_number", width: 80 },
+                    { title: "EPA", field: "epa", formatter: (cell) => Number(cell.getValue() || 0).toFixed(1) },
+                    { title: "Climb", field: "pit_climb" }
+                ]
+            });
+
             picklistTableInstance.on("rowDblClick", (e, row) => launchDrillDownProfile(row.getData()));
         }
 
-        async function saveMasterPicklist() {
-            if (!picklistTableInstance) return;
-            const currentOrder = picklistTableInstance.getData().map(d => d.team_number);
-            if (currentOrder.length === 0) return showToast("ERROR: Cannot save an empty picklist.");
-
-            showToast("ENCRYPTING: Pushing Master Picklist to Vault...");
-            try {
-                const payload = {
-                    event_key: activeEventKey,
-                    created_by: currentUser,
-                    ranked_teams: currentOrder,
-                    updated_at: new Date().toISOString()
-                };
-
-                const { error } = await sbClient.from('picklists').upsert(payload, { onConflict: 'event_key' });
-                if (error) throw error;
-                showToast("VAULT SECURED: Master Picklist successfully saved.");
-            } catch (e) {
-                showToast(`SAVE FAILED: ${e.message}`);
-            }
-        }
-
         function launchDrillDownProfile(teamData) {
-            showToast(`LOADING PROFILE: Retrieving intel for Team ${teamData.team_number}`);
+            showToast(`Loading profile for Team ${teamData.team_number}`);
             switchView('view-detail');
             switchDetailTab('overview');
             document.getElementById('detail-team-name').innerText = `TEAM ${teamData.team_number}: ${teamData.team_nickname ? teamData.team_nickname.toUpperCase() : 'UNKNOWN'}`;
 
-            // PANE 1: PIT SCOUTING MEDIA & SPECS
             const mediaBox = document.getElementById('detail-image-box');
             mediaBox.innerHTML = teamData.image_url ? `<img src="${teamData.image_url}" class="robot-photo">` : `<div style="color:#444; font-weight:900;">NO PHOTO AVAILABLE</div>`;
 
@@ -2160,12 +2284,11 @@
             `;
 
             document.getElementById('detail-notes-block').innerHTML = `
-                <p><strong style="color:var(--wobot-red);">PROUD FEATURES:</strong> ${teamData.proud_features || 'N/A'}</p>
-                <p><strong style="color:var(--wobot-red);">STRATEGIC PITCH:</strong> ${teamData.strategic_pitch || 'N/A'}</p>
+                <p><strong style="color:var(--primary-color);">PROUD FEATURES:</strong> ${teamData.proud_features || 'N/A'}</p>
+                <p><strong style="color:var(--primary-color);">STRATEGIC PITCH:</strong> ${teamData.strategic_pitch || 'N/A'}</p>
             `;
             document.getElementById('detail-vulnerabilities-block').innerText = teamData.vulnerabilities || "No vulnerabilities identified/recorded.";
 
-            // PANE 2: STATBOTICS EPA TELEMETRY
             document.getElementById('statbotics-content').innerHTML = teamData.epa ? `
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
                     <div style="background:#222; padding: 15px; border-radius: 8px;">TOTAL EPA: <strong style="color:#4ade80;">${Number(teamData.epa).toFixed(1)}</strong></div>
@@ -2174,15 +2297,14 @@
                     <div style="background:#222; padding: 15px; border-radius: 8px;">ENDGAME EPA: <strong>${teamData.endgame_epa ? Number(teamData.endgame_epa).toFixed(1) : 'N/A'}</strong></div>
                     <div style="background:#222; padding: 15px; border-radius: 8px; grid-column: 1/-1;">EVENT WIN RATE: <strong>${((teamData.winrate || 0) * 100).toFixed(0)}%</strong></div>
                 </div>
-            ` : `<div style="padding: 15px;">No Statbotics data available for this team at the current event.</div>`;
+            ` : `<div style="padding: 15px;">No Statbotics data available.</div>`;
 
-            // PANE 3: LOVAT TEAM AVERAGES (Macro)
             const teamAvgs = lovatTeamCache[teamData.team_number];
             let lovatTeamHTML = "";
             if (teamAvgs) {
                 lovatTeamHTML = `
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
-                        <div style="background:#222; padding: 15px; border-radius: 8px;">MAIN ROLE: <strong style="color:var(--owner-purple);">${teamAvgs['mainRole'] || 'N/A'}</strong></div>
+                        <div style="background:#222; padding: 15px; border-radius: 8px;">MAIN ROLE: <strong style="color:var(--admin-color);">${teamAvgs['mainRole'] || 'N/A'}</strong></div>
                         <div style="background:#222; padding: 15px; border-radius: 8px;">AVG TOTAL PTS: <strong>${teamAvgs['avgTotalPoints'] || 'N/A'}</strong></div>
                         <div style="background:#222; padding: 15px; border-radius: 8px;">AVG AUTO PTS: <strong>${teamAvgs['avgAutoPoints'] || 'N/A'}</strong></div>
                         <div style="background:#222; padding: 15px; border-radius: 8px;">AVG TELEOP PTS: <strong>${teamAvgs['avgTeleopPoints'] || 'N/A'}</strong></div>
@@ -2191,27 +2313,22 @@
                         <div style="background:#222; padding: 15px; border-radius: 8px; grid-column: 1/-1;">MATCHES SCOUTED: <strong>${teamAvgs['numMatches'] || '0'}</strong></div>
                     </div>
                 `;
-            } else {
-                lovatTeamHTML = `<div style="padding: 15px; color: var(--text-muted);">No Lovat Team Averages available.</div>`;
-            }
+            } else { lovatTeamHTML = `<div style="padding: 15px; color: var(--text-muted);">No Lovat Averages.</div>`; }
             document.getElementById('lovat-team-content').innerHTML = lovatTeamHTML;
 
-            // PANE 4: LOVAT RAW MATCH LOG (Micro)
             if (matchTableInstance) matchTableInstance.destroy();
             const rawMatches = lovatMatchCache[teamData.team_number] || [];
-
             matchTableInstance = new Tabulator("#match-history-table", {
                 data: rawMatches,
                 layout: "fitColumns",
-                placeholder: "No raw match logs uploaded for this team.",
                 columns: [
-                    { title: "MATCH", field: "match", width: 90, hozAlign: "center", headerSort: false },
-                    { title: "TOTAL PTS", field: "totalPoints", width: 110, hozAlign: "center", sorter: "number" },
+                    { title: "MATCH", field: "match", width: 90, hozAlign: "center" },
+                    { title: "TOTAL PTS", field: "totalPoints", width: 110, hozAlign: "center" },
                     { title: "AUTO PTS", field: "autoPoints", width: 110, hozAlign: "center" },
                     { title: "TELEOP", field: "teleopPoints", width: 100, hozAlign: "center" },
                     { title: "CLIMB", field: "endgameClimb", width: 120 },
-                    { title: "ACCURACY", field: "accuracy", width: 100, hozAlign: "center" },
-                    { title: "DRIVER", field: "driverAbility", width: 90, hozAlign: "center" },
+                    { title: "ACCURACY", field: "accuracy", width: 100 },
+                    { title: "DRIVER", field: "driverAbility", width: 90 },
                     { title: "SCOUTER", field: "scouter", width: 120 },
                     { title: "NOTES", field: "notes", widthGrow: 2, formatter: "textarea" }
                 ],
@@ -2219,68 +2336,53 @@
         }
 
         async function setGlobalEvent() {
-            showToast("UPDATING EVENT: Synchronizing with TBA & Statbotics...");
+            showToast("Synchronizing APIs for new event...");
             const inputKey = document.getElementById('admin-event-input').value.trim();
-            if (!inputKey) return showToast("ERROR: Event Key cannot be blank.");
-
+            if (!inputKey) return;
             try {
                 await sbClient.from('api_keys').update({ key_value: inputKey }).eq('name', 'active_event');
-
                 const { data: tbaKey } = await sbClient.from('api_keys').select('key_value').eq('name', 'tba').single();
                 if (tbaKey) {
-                    showToast("SYNCING TBA: Pulling official team list...");
                     const res = await fetch(`https://www.thebluealliance.com/api/v3/event/${inputKey}/teams/simple`, { headers: { 'X-TBA-Auth-Key': tbaKey.key_value } });
                     const teams = await res.json();
                     localStorage.setItem('cachedEventTeams', JSON.stringify(teams.map(t => parseInt(t.team_number))));
                     let tbaMap = {};
                     teams.forEach(t => tbaMap[t.team_number] = t.nickname);
                     localStorage.setItem('tbaCache', JSON.stringify(tbaMap));
-                }
 
+                    const rankRes = await fetch(`https://www.thebluealliance.com/api/v3/event/${inputKey}/rankings`, { headers: { 'X-TBA-Auth-Key': tbaKey.key_value } });
+                    if (rankRes.ok) {
+                        const rankData = await rankRes.json();
+                        let rankMap = {};
+                        if (rankData && rankData.rankings) {
+                            rankData.rankings.forEach(r => rankMap[r.team_key.replace('frc', '')] = r.rank);
+                        }
+                        localStorage.setItem('tbaRankCache', JSON.stringify(rankMap));
+                    }
+                }
                 await syncStatboticsData(inputKey);
-                showToast(`SUCCESS: Event changed to ${inputKey.toUpperCase()}`);
                 await fetchGlobalEventKey();
                 await refreshApplicationData();
-            } catch (err) { showToast("EVENT UPDATE FAILED: Database or API error."); }
+            } catch (err) { console.error(err); }
         }
 
-        /**
-         * LOVAT BUCKET SYNC & PARSERS
-         */
         async function syncLovatFromStorage() {
             try {
-                showToast("FETCHING: Pulling Team Averages from cloud...");
-                const { data: teamData, error: teamErr } = await sbClient.storage.from('scouting-data').download('lovat_team_data.csv');
-                if (!teamErr) parseLovatTeamData(await teamData.text());
-
-                showToast("FETCHING: Pulling Match Logs from cloud...");
-                const { data: matchData, error: matchErr } = await sbClient.storage.from('scouting-data').download('lovat_match_data.csv');
-                if (!matchErr) parseLovatMatchData(await matchData.text());
-
-                showToast("LOVAT SYNC COMPLETE: All match analytics updated.");
-            } catch (err) { console.warn("Lovat sync failed:", err.message); }
+                const { data: teamData } = await sbClient.storage.from('scouting-data').download('lovat_team_data.csv');
+                if (teamData) parseLovatTeamData(await teamData.text());
+                const { data: matchData } = await sbClient.storage.from('scouting-data').download('lovat_match_data.csv');
+                if (matchData) parseLovatMatchData(await matchData.text());
+                showToast("Lovat sync complete.");
+            } catch (err) { console.warn(err); }
         }
 
         async function uploadLovatToStorage(input, fileName) {
             const file = input.files[0];
             if (!file) return;
-
-            if (!file.name.toLowerCase().endsWith('.csv')) {
-                showToast("ERROR: Only CSV files are accepted.");
-                input.value = '';
-                return;
-            }
-
             try {
-                showToast(`UPLOADING: Pushing ${fileName} to cloud storage...`);
                 const { error } = await sbClient.storage.from('scouting-data').upload(fileName, file, { cacheControl: '3600', upsert: true });
-                if (error) throw error;
-
-                showToast("UPLOAD SUCCESS: Reparsing local cache...");
-                await syncLovatFromStorage();
-            } catch (err) {
-                showToast(`UPLOAD FAILED: ${err.message}`);
-            } finally { input.value = ''; }
+                if (!error) await syncLovatFromStorage();
+            } catch (err) { showToast("Upload failed."); }
         }
 
         function parseLovatTeamData(csvText) {
@@ -2288,7 +2390,6 @@
             if (lines.length < 2) return;
             const headers = lines[0].split(',');
             lovatTeamCache = {};
-
             for (let i = 1; i < lines.length; i++) {
                 const columns = lines[i].split(',');
                 const teamNum = parseInt(columns[0]?.trim());
@@ -2304,22 +2405,18 @@
         function parseLovatMatchData(csvText) {
             const lines = csvText.replace(/\r/g, '').split('\n').filter(r => r.trim() !== "");
             if (lines.length < 2) return;
-
             const headers = lines[0].split(',');
             lovatMatchCache = {};
             const teamIdx = headers.findIndex(h => h.trim() === 'teamNumber');
-
             for (let i = 1; i < lines.length; i++) {
                 const cols = [];
-                let inQuotes = false;
-                let current = '';
+                let inQuotes = false, current = '';
                 for (let char of lines[i]) {
                     if (char === '"') inQuotes = !inQuotes;
                     else if (char === ',' && !inQuotes) { cols.push(current); current = ''; }
                     else current += char;
                 }
                 cols.push(current);
-
                 const teamNum = parseInt(cols[teamIdx]?.trim());
                 if (!isNaN(teamNum)) {
                     let rowData = {};
@@ -2331,98 +2428,35 @@
             localStorage.setItem('lovatMatchCache', JSON.stringify(lovatMatchCache));
         }
 
-        async function exportMergedLovatData() {
-            try {
-                showToast("GENERATING EXPORT: Fetching cloud Team Averages...");
-                const { data: lovatBlob, error: lovatError } = await sbClient.storage.from('scouting-data').download('lovat_team_data.csv');
-                if (lovatError) throw new Error("Could not find lovat_team_data.csv in bucket.");
-
-                const lovatText = await lovatBlob.text();
-                const lines = lovatText.replace(/\r/g, '').split('\n').filter(row => row.trim() !== "");
-                const header = lines[0].split(',');
-
-                const newHeader = [...header, "PIT_DRIVETRAIN", "PIT_MAX_CLIMB", "PIT_VULNERABILITIES"].join(',');
-                const mergedRows = [newHeader];
-
-                for (let i = 1; i < lines.length; i++) {
-                    const columns = lines[i].split(',');
-                    const teamNum = parseInt(columns[0]?.trim());
-                    const pitReport = globalDataCache.find(report => parseInt(report.team_number) === teamNum);
-
-                    if (pitReport && pitReport.id) {
-                        const extraData = [
-                            `"${pitReport.drivetrain || ''}"`,
-                            `"${pitReport.max_climb || ''}"`,
-                            `"${pitReport.vulnerabilities?.replace(/"/g, '""') || ""}"`
-                        ];
-                        mergedRows.push([...columns, ...extraData].join(','));
-                    } else { mergedRows.push([...columns, "", "", ""].join(',')); }
-                }
-
-                showToast("PACKAGING: Formatting CSV for download...");
-                const mergedCSV = mergedRows.join('\n');
-                const blob = new Blob([mergedCSV], { type: 'text/csv' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.setAttribute('hidden', '');
-                a.setAttribute('href', url);
-                a.setAttribute('download', `LOVAT_MERGED_AVGS_${activeEventKey}.csv`);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                showToast("EXPORT SUCCESS: Merged file downloaded.");
-            } catch (err) { showToast(`MERGE FAILED: ${err.message}`); }
-        }
-
         async function autoAssign() {
-            showToast("INITIALIZING: Starting auto-dispatcher engine...");
             const { data: scouters } = await sbClient.from('profiles').select('email').eq('role', 'scouter');
             const cachedTeams = JSON.parse(localStorage.getItem('cachedEventTeams') || '[]');
             const unscoutedList = cachedTeams.filter(num => !globalDataCache.find(d => d.team_number === num && d.id)).sort((a, b) => a - b);
-
-            if (unscoutedList.length === 0) return showToast("ABORTED: No un-scouted teams available at this event.");
-            if (!scouters || scouters.length === 0) return showToast("ABORTED: No active scouters found.");
-
-            const scouterEmails = scouters.map(s => s.email);
-            const blockSize = Math.ceil(unscoutedList.length / scouterEmails.length);
+            if (unscoutedList.length === 0 || !scouters) return;
             let finalAssignments = [];
-
-            scouterEmails.forEach((email, index) => {
+            const blockSize = Math.ceil(unscoutedList.length / scouters.length);
+            scouters.forEach((s, index) => {
                 unscoutedList.slice(index * blockSize, (index + 1) * blockSize).forEach(teamNum => {
-                    finalAssignments.push({ scouter_email: email, team_number: teamNum, event_key: activeEventKey });
+                    finalAssignments.push({ scouter_email: s.email, team_number: teamNum, event_key: activeEventKey });
                 });
             });
-
-            const { error } = await sbClient.from('scout_assignments').insert(finalAssignments);
-            if (!error) {
-                showToast("DISPATCH COMPLETE: Teams successfully auto-balanced.");
-                refreshApplicationData();
-            } else { showToast("DISPATCH FAILED: " + error.message); }
+            await sbClient.from('scout_assignments').insert(finalAssignments);
+            refreshApplicationData();
         }
 
         async function manualAssign() {
-            showToast("PROCESSING: Assigning team to target scouter...");
             const targetScouter = document.getElementById('manual-scout-select').value;
             const targetTeam = document.getElementById('manual-team-select').value;
-
-            if (!targetScouter || !targetTeam) return showToast("ERROR: Please select both a scouter and a team.");
-            const assignmentPayload = { scouter_email: targetScouter, team_number: parseInt(targetTeam), event_key: activeEventKey, completed: false };
-            const { error } = await sbClient.from('scout_assignments').insert([assignmentPayload]);
-
-            if (!error) {
-                showToast(`TARGETED DISPATCH: Team ${targetTeam} assigned to ${targetScouter.split('@')[0]}`);
-                document.getElementById('manual-team-select').selectedIndex = 0;
-                refreshApplicationData();
-            } else { showToast("ASSIGNMENT FAILED: " + error.message); }
+            if (!targetScouter || !targetTeam) return;
+            const { error } = await sbClient.from('scout_assignments').insert([{ scouter_email: targetScouter, team_number: parseInt(targetTeam), event_key: activeEventKey, completed: false }]);
+            if (!error) refreshApplicationData();
         }
 
         async function loadUserAdminTable() {
             try {
-                const { data: users, error } = await sbClient.from('profiles').select('*').order('email', { ascending: true });
-                if (error) throw error;
-                if (adminTableInstance) {
-                    adminTableInstance.setData(users);
-                } else {
+                const { data: users } = await sbClient.from('profiles').select('*').order('email', { ascending: true });
+                if (adminTableInstance) adminTableInstance.setData(users);
+                else {
                     adminTableInstance = new Tabulator("#user-admin-table", {
                         data: users, layout: "fitColumns",
                         columns: [
@@ -2431,33 +2465,24 @@
                                 title: "ROLE", field: "role", editor: "list", widthGrow: 1, editorParams: { values: ["scouter", "strategist", "drive_coach", "admin"] },
                                 cellEdited: async (cell) => {
                                     const record = cell.getData();
-                                    if (record.email.toLowerCase() === OWNER_ID_LOCK) { showToast("ERROR: Owner role cannot be modified."); return loadUserAdminTable(); }
-                                    const { error: upError } = await sbClient.from('profiles').update({ role: record.role }).eq('id', record.id);
-                                    if (upError) showToast("ERROR: Role update rejected by server.");
-                                    else showToast(`ROLE UPDATED: ${record.email} is now a ${record.role}`);
+                                    if (record.email.toLowerCase() === OWNER_ID_LOCK) return loadUserAdminTable();
+                                    await sbClient.from('profiles').update({ role: record.role }).eq('id', record.id);
                                 }
                             }
                         ],
                     });
                 }
-            } catch (err) { console.error("Error loading user roles."); }
+            } catch (err) { console.error(err); }
         }
 
         async function assignAllToScouter() {
-            if (!confirm("Are you sure you want to reset all users to the 'scouter' role?")) return;
-            showToast("EXECUTING: Performing mass security reset...");
-            const { error } = await sbClient.from('profiles').update({ role: 'scouter' }).neq('email', OWNER_ID_LOCK);
-            if (!error) {
-                showToast("SECURITY RESET COMPLETE: All targeted users demoted to scouter.");
-                loadUserAdminTable();
-            } else { showToast(`RESET FAILED: ${error.message}`); }
+            if (!confirm("Are you sure you want to reset all user permissions?")) return;
+            await sbClient.from('profiles').update({ role: 'scouter' }).neq('email', OWNER_ID_LOCK);
+            loadUserAdminTable();
         }
 
         function downloadRosterCSV() {
-            if (mainTableInstance) {
-                showToast("EXPORTING: Downloading Team Data CSV to device.");
-                mainTableInstance.download("csv", `WOBOT_${activeEventKey}_Scouting_Export.csv`);
-            } else { showToast("ERROR: No data available to export."); }
+            if (mainTableInstance) mainTableInstance.download("csv", `${APP_CONFIG.teamName}_Scouting_Export.csv`);
         }
     </script>
 </body>
