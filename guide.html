@@ -30,6 +30,8 @@
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            /* Prevent pull-to-refresh on mobile */
+            overscroll-behavior-y: contain;
         }
 
         .slide-container {
@@ -38,12 +40,15 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            padding: 10px;
         }
 
         .slide {
             display: none;
             width: 85%;
             max-width: 1100px;
+            max-height: 80vh;
+            overflow-y: auto;
             padding: 50px;
             background-color: var(--card-grey);
             border-radius: 18px;
@@ -174,6 +179,93 @@
                 transform: translateY(0);
             }
         }
+
+        /* --- RESPONSIVE QUERIES --- */
+
+        @media (max-width: 1024px) {
+            .slide {
+                width: 90%;
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            ul {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                width: 95%;
+                padding: 20px;
+                border-left-width: 5px;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+                letter-spacing: 1px;
+                padding-bottom: 10px;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            ul {
+                font-size: 1rem;
+                padding-left: 20px;
+                line-height: 1.5;
+            }
+
+            li {
+                margin-bottom: 12px;
+            }
+
+            .controls {
+                padding: 15px 20px;
+            }
+
+            button.nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .counter {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .pill {
+                font-size: 0.8rem;
+                padding: 2px 8px;
+            }
+
+            .slide {
+                padding: 15px;
+            }
+        }
+
+        @media (max-height: 450px) {
+            .slide {
+                max-height: 65vh;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 
@@ -191,7 +283,9 @@
         <div class="slide">
             <h1>1. Logging In</h1>
             <ul>
-                <li>Navigate to the app URL on your phone or tablet and click the NEED AN ACCOUNT? SIGN UP text. Then create your account using the format linked below. The team code will be relayed in the proper channels</li>
+                <li>Navigate to the app URL on your phone or tablet and click the NEED AN ACCOUNT? SIGN UP text. Then
+                    create your account using the format linked below. The team code will be relayed in the proper
+                    channels</li>
                 <li><strong>Email Format:</strong> <span class="highlight">[firstname]scout@wobot141.com</span></li>
                 <li><strong>Password Format:</strong> <span class="highlight">[firstname]141</span> (all lowercase)</li>
                 <li
@@ -266,6 +360,10 @@
         const nextBtn = document.getElementById('nextBtn');
         const counter = document.getElementById('slideCounter');
 
+        // Touch handling variables
+        let touchstartX = 0;
+        let touchendX = 0;
+
         function showSlide(index) {
             slides.forEach((slide, i) => {
                 slide.classList.remove('active');
@@ -295,7 +393,28 @@
             }
         });
 
-        // Initialize first slide
+        // Swipe Gesture Handling
+        function handleGesture() {
+            const threshold = 50; // minimum distance for a swipe
+            if (touchendX < touchstartX - threshold) {
+                // Swipe Left (Next)
+                if (currentSlide < slides.length - 1) changeSlide(1);
+            }
+            if (touchendX > touchstartX + threshold) {
+                // Swipe Right (Prev)
+                if (currentSlide > 0) changeSlide(-1);
+            }
+        }
+
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, false);
+
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleGesture();
+        }, false);
+
         showSlide(currentSlide);
     </script>
 </body>
