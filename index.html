@@ -2948,7 +2948,7 @@
                 columns: [
                     { rowHandle: true, formatter: "handle", headerSort: false, frozen: true, width: 30, minWidth: 30 },
                     { title: "Team", field: "team_number", width: 80 },
-                    { title: "LOVAT PTS", field: "lovat_points", formatter: (cell) => Number(cell.getValue() || 0).toFixed(1) },
+                    { title: "LOVAT PTS", field: "lovat_points", formatter: (cell) => Number(cell.getValue()).toFixed(1), width: 80 },
                     { title: "Rank", field: "rank", width: 70 }
                 ]
             });
