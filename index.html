@@ -650,6 +650,26 @@
             position: relative;
         }
 
+        input[type="checkbox"] {
+            appearance: auto !important;
+            -webkit-appearance: checkbox !important;
+            accent-color: var(--primary-color);
+            cursor: pointer;
+            z-index: 10;
+            position: relative;
+        }
+
+
+        .field-checkbox:checked::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+        }
+
         /* TOAST NOTIFICATIONS */
         #toast-container {
             position: fixed;
@@ -1175,6 +1195,7 @@
                             style="font-size:1.5rem; text-align:center; font-weight:900;" required></div>
                 </div>
 
+
                 <div style="display:flex; flex-direction:column; gap:8px;">
                     <label>Driver Skill / Field Awareness</label>
                     <select id="m-driver-skill">
@@ -1188,7 +1209,8 @@
 
                 <div
                     style="display:flex; align-items:center; gap:15px; background:var(--field-bg); padding:15px; border-radius:8px; border:1px solid var(--border-grey); margin-top: 10px;">
-                    <input type="checkbox" id="m-broke-down" style="width:25px; height:25px; cursor:pointer;">
+                    <input type="checkbox" id="m-broke-down"
+                        style="width:25px; height:25px; cursor:pointer; position:relative; z-index:999; pointer-events:all;">
                     <label for="m-broke-down"
                         style="margin:0; font-size:1rem; cursor:pointer; color:var(--danger-color);">ROBOT BROKE DOWN /
                         DISABLED</label>
@@ -3084,7 +3106,7 @@
                 columns: [
                     { rowHandle: true, formatter: "handle", headerSort: false, frozen: true, width: 30, minWidth: 30 },
                     { title: "Team", field: "team_number", width: 80 },
-                    { title: "LOVAT PTS", field: "lovat_points", formatter: (cell) => Number(cell.getValue() || 0).toFixed(1) },
+                    { title: "LOVAT PTS", field: "lovat_points", formatter: (cell) => Number(cell.getValue() || 0).toFixed(1), width: 30, minWidth: 30 },
                     { title: "Rank", field: "rank", width: 70 }
                 ]
             });
